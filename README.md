@@ -16,3 +16,13 @@ composer dump-autoload - запуск внутри контейнера php дл
 docker compose up -d
 docker exec -it laravel-fitness-club-app-1 sh
 php artisan serve
+
+Создание модели:
+php artisan make:model <name>
+Создание миграции:
+
+Запуск миграций:
+php artisan migrate
+
+Создание контроллера:
+php artisan make:controller UserController

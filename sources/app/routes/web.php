@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get(
-    '/page',
-    []
+    'page/',
+    [HomeController::class, 'index']
 )->name('page');
