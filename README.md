@@ -17,12 +17,14 @@ docker compose up -d
 docker exec -it laravel-fitness-club-app-1 sh
 php artisan serve
 
-Создание модели:
-php artisan make:model <name>
-Создание миграции:
+Создание модели и миграции:
+php artisan make:model User -m
 
 Запуск миграций:
 php artisan migrate
+
+Откат последней миграции:
+php artisan migrate:rollback
 
 Создание контроллера:
 php artisan make:controller UserController
