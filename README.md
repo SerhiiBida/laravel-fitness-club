@@ -28,3 +28,12 @@ php artisan migrate:rollback
 
 Создание контроллера:
 php artisan make:controller UserController
+
+Создание класса для валидации:
+php artisan make:request AuthRequest
+
+Очистка кэша, если ошибки:
+php artisan route:clear
+php artisan config:clear
+php artisan cache:clear
+composer dump-autoload
