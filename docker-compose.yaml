@@ -46,6 +46,20 @@ services:
     networks:
       - app
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - mysql
+    ports:
+      - "3310:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    networks:
+      - app
+
   redis:
     image: redis:alpine
     ports:
