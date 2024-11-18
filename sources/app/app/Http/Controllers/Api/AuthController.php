@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +16,22 @@ class AuthController extends Controller
 {
     public function login(Request $request): JsonResponse
     {
-        return response()->json(['user' => 10000]);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|between:8,16',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => __('auth.failed')], 422);
+        }
+
+        return response()->json([
+            'token'=> auth()->user()->createToken('API Token')->plainTextToken,
+        ], 201);
     }
 
     public function register(Request $request): JsonResponse {
@@ -39,13 +56,16 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // Проверить авторизован ли пользователь
-    public function checkAuthentication(Request $request): JsonResponse
+    public function logout(Request $request): Response
     {
-        return response()->json(['authenticated' => true]);
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->noContent();
     }
 
-    public function logout() {
-
+    // Проверить авторизован ли пользователь
+    public function checkAuthentication(Request $request): Response
+    {
+        return response()->noContent();
     }
 }

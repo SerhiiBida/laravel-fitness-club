@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,12 +21,16 @@ use App\Http\Controllers\Api\AuthController;
 Route::group(['prefix' => '/auth'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    Route::middleware('auth:sanctum')->post('/check', [AuthController::class, 'checkAuthentication']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+    Route::middleware('auth:sanctum')->post('/check', [AuthController::class, 'checkAuthentication']);
 });
 
+// CRUD User
+//Route::middleware('auth:sanctum')->apiResources(['users' => UserController::class]);
 
-
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+Route::group([
+    'prefix' => '/users',
+    'middleware' => 'auth:sanctum'
+], function () {
+    Route::get('/current', [UserController::class, 'current']);
+});

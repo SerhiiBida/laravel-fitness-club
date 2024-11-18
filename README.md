@@ -29,6 +29,9 @@ php artisan migrate:rollback
 Создание контроллера:
 php artisan make:controller UserController
 
+Создание ресурсного контроллера для API:
+php artisan make:controller UserController --api
+
 Создание класса для валидации:
 php artisan make:request AuthRequest
 
