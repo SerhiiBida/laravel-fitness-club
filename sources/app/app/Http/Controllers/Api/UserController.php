@@ -52,13 +52,7 @@ class UserController extends Controller
 
     public function current(): JsonResponse
     {
-        $userid = Auth::id();
-
-        $user = DB::table('users')
-            ->join('roles', 'users.role_id', '=','roles.id')
-            ->where('users.id', $userid)
-            ->select('users.*', 'roles.name as role_name')
-            ->first();
+        $user = Auth::user();
 
         return response()->json(['user' => $user], 201);
     }
