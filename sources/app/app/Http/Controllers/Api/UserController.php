@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -51,6 +52,14 @@ class UserController extends Controller
 
     public function current(): JsonResponse
     {
-        return response()->json(['user' => Auth::user()], 201);
+        $userid = Auth::id();
+
+        $user = DB::table('users')
+            ->join('roles', 'users.role_id', '=','roles.id')
+            ->where('users.id', $userid)
+            ->select('users.*', 'roles.name as role_name')
+            ->first();
+
+        return response()->json(['user' => $user], 201);
     }
 }

@@ -26,6 +26,9 @@ php artisan migrate
 Откат последней миграции:
 php artisan migrate:rollback
 
+Откат всех миграций:
+php artisan migrate:reset
+
 Создание контроллера:
 php artisan make:controller UserController
 
