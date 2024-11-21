@@ -10,6 +10,8 @@ class Bonus extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     // Отношения
     public function membership(): HasMany
     {

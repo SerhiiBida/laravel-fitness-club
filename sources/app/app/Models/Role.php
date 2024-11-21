@@ -10,6 +10,8 @@ class Role extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     // Отношение с другими таблицами
     public function user(): HasMany
     {
