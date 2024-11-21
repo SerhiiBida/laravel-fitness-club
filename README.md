@@ -38,6 +38,21 @@ php artisan make:controller UserController --api
 Создание класса для валидации:
 php artisan make:request AuthRequest
 
+Создать factory для шаблона генерации данных:
+php artisan make:factory PostFactory
+
+Создать seeder:
+php artisan make:seeder UserSeeder
+
+Запуск всех сеялок, для генерации данных в БД:
+php artisan db:seed
+
+Запуск определенной сеялки:
+php artisan db:seed --class=UserSeeder
+
+Запуск всех сеялок с удалением таблиц и запускам миграций повторно:
+php artisan migrate:fresh --seed
+
 Очистка кэша, если ошибки:
 php artisan route:clear
 php artisan config:clear

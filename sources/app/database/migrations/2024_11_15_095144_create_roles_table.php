@@ -16,12 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
         });
-
-        DB::table('roles')->insert([
-            ['name' => 'admin'],
-            ['name' => 'user'],
-            ['name' => 'trainer']
-        ]);
     }
 
     /**

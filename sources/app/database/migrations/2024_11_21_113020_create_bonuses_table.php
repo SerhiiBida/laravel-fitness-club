@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bonuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('amount')->default(0);
+            $table->unsignedInteger('amount')->unique();
         });
     }
 
