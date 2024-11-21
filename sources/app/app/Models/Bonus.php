@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Role extends Model
+class Bonus extends Model
 {
     use HasFactory;
 
-    // Отношение с другими таблицами
-    public function user(): HasMany
+    // Отношения
+    public function membership(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Membership::class);
     }
 }

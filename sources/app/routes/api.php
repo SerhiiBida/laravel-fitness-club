@@ -30,9 +30,13 @@ Route::group(['prefix' => '/auth'], function () {
 // CRUD User
 //Route::middleware('auth:sanctum')->apiResources(['users' => UserController::class]);
 
+// Пользователь
 Route::group([
     'prefix' => '/users',
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/current', [UserController::class, 'current']);
 });
+
+// Абонементы
+
