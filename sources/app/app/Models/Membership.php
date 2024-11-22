@@ -15,11 +15,6 @@ class Membership extends Model
     public $timestamps = true;
 
     // Внешние ключи
-    public function bonus(): belongsTo
-    {
-        return $this->belongsTo(Bonus::class);
-    }
-
     public function discount(): belongsTo
     {
         return $this->belongsTo(Discount::class);

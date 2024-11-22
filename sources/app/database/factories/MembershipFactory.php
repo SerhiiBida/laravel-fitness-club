@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Bonus;
 use App\Models\Discount;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,12 +18,12 @@ class MembershipFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->title(),
-            'description' => fake()->text(),
-            'price' => fake()->numberBetween(20, 145),
+            'name' => fake()->text(30),
+            'description' => fake()->paragraph(10),
+            'price' => fake()->randomFloat(2, 5, 145),
             'image_path' => '/memberships/default/default.png',
             'validity_days' => fake()->numberBetween(7, 60),
-            'bonus_id' => Bonus::factory(),
+            'bonuses' => fake()->numberBetween(10, 1000),
             'discount_id' => Discount::factory(),
         ];
     }

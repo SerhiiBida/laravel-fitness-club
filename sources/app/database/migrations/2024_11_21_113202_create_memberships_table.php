@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('price', 9, 2);
             $table->string('image_path')->default('/memberships/default/default.png');
             $table->unsignedInteger('validity_days');
-            $table->foreignId('bonus_id')->nullable()->constrained();
+            $table->unsignedInteger('bonuses');
             $table->foreignId('discount_id')->nullable()->constrained();
             $table->timestamps();
         });

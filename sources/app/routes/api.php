@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\MembershipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,5 +40,9 @@ Route::group([
 });
 
 // Абонементы
-
+Route::group([
+    'prefix' => '/memberships',
+], function () {
+    Route::get('/search', [MembershipController::class, 'search']);
+});
 

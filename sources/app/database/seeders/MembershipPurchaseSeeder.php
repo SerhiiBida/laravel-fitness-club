@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Bonus;
-use App\Models\Discount;
 use App\Models\Membership;
 use App\Models\MembershipPurchase;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class MembershipPurchaseSeeder extends Seeder
@@ -22,8 +20,9 @@ class MembershipPurchaseSeeder extends Seeder
 
         MembershipPurchase::factory()
             ->count(250)
-            ->for($users->random())
-            ->for($memberships->random())
-            ->create();
+            ->state(new Sequence(
+                fn (Sequence $sequence) => ['membership_id' => Membership::all()->random()],
+                fn (Sequence $sequence) => ['user_id' => User::all()->random()],
+            ))->create();
     }
 }

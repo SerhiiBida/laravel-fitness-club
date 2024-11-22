@@ -17,7 +17,8 @@ class DiscountFactory extends Factory
     public function definition(): array
     {
         return [
-            'percent' => fake()->unique()->numberBetween(1, 90)
+            'name' =>fake()->text(30),
+            'percent' => fake()->numberBetween(1, 90)
         ];
     }
 }
