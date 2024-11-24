@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->rememberToken();
             $table->unsignedInteger('bonuses')->default(0);
+            $table->string('image_path')->default('/users/default/default.png');
             $table->boolean('is_staff')->default(false);
             $table->timestamps();
         });

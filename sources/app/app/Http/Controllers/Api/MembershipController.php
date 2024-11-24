@@ -32,7 +32,7 @@ class MembershipController extends Controller
             ->where('memberships.is_published', '=', 1);
 
         // Вычисляем поле с учетом скидки
-        $membershipQuery->addSelect(DB::raw('(memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent) as discounted_price'));
+        $membershipQuery->addSelect(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2) as discounted_price'));
 
         // Поиск
         if ($request->filled('search')){
@@ -40,9 +40,9 @@ class MembershipController extends Controller
         }
 
         // Сортировка
-        if ($request->filled('sort') && is_string($sort) && in_array($sort, $sortOptions)) {
+        if ($request->filled('sort') && in_array($sort, $sortOptions)) {
             if($sort === 'discounted_price') {
-                $membershipQuery->orderBy(DB::raw('(memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent)'));
+                $membershipQuery->orderBy(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2)'));
             } else {
                 $membershipQuery->orderBy($sort);
             }
