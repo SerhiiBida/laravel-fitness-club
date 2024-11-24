@@ -24,6 +24,7 @@ class MembershipFactory extends Factory
             'image_path' => '/memberships/default/default.png',
             'validity_days' => fake()->numberBetween(7, 60),
             'bonuses' => fake()->numberBetween(10, 1000),
+            'is_published' => true,
             'discount_id' => Discount::factory(),
         ];
     }

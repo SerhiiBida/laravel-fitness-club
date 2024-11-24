@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image_path')->default('/memberships/default/default.png');
             $table->unsignedInteger('validity_days');
             $table->unsignedInteger('bonuses');
+            $table->boolean('is_published')->default(false);
             $table->foreignId('discount_id')->nullable()->constrained();
             $table->timestamps();
         });
