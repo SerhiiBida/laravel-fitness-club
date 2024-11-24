@@ -42,6 +42,7 @@ Route::group([
 // Абонементы
 Route::group([
     'prefix' => '/memberships',
+    'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/search', [MembershipController::class, 'search']);
 });
