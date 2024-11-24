@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MembershipController;
+use App\Http\Controllers\Api\MembershipPurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,10 +41,21 @@ Route::group([
 });
 
 // Абонементы
+Route::middleware('auth:sanctum')->apiResource('memberships', MembershipController::class);
+
 Route::group([
     'prefix' => '/memberships',
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/search', [MembershipController::class, 'search']);
+});
+
+// Купленные абонементы
+Route::apiResource('membership-purchase', MembershipController::class);
+
+Route::group([
+    'prefix' => '/membership-purchase',
+], function () {
+    Route::get('/check', [MembershipPurchaseController::class, 'check']);
 });
 

@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\DB;
 
 class MembershipController extends Controller
 {
+    /**
+     * Дать 1 абонемент
+     */
+    public function show(string $id): JsonResponse
+    {
+        // Абонемент
+        $membershipQuery = Membership::query()
+            ->leftJoin('discounts', 'memberships.discount_id', '=', 'discounts.id')
+            ->select('memberships.*', 'discounts.percent as discount_percent')
+            ->where('memberships.is_published', '=', 1)
+            ->where('memberships.id', '=', $id);
+
+        // Вычисляем поле с учетом скидки
+        $membershipQuery->addSelect(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2) as discounted_price'));
+
+        return response()->json([
+            $membershipQuery->first()
+        ]);
+    }
+
     public function search(Request $request): JsonResponse
     {
         $sortOptions = ['name', 'discounted_price', 'validity_days', 'bonuses'];
