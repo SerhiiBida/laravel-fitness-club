@@ -41,21 +41,20 @@ Route::group([
 });
 
 // Абонементы
-Route::middleware('auth:sanctum')->apiResource('memberships', MembershipController::class);
-
 Route::group([
     'prefix' => '/memberships',
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/search', [MembershipController::class, 'search']);
+    Route::get('/{id}', [MembershipController::class, 'show']);
 });
 
 // Купленные абонементы
-Route::apiResource('membership-purchase', MembershipController::class);
-
 Route::group([
     'prefix' => '/membership-purchase',
+    'middleware' => 'auth:sanctum'
 ], function () {
-    Route::get('/check', [MembershipPurchaseController::class, 'check']);
+    Route::post('/check', [MembershipPurchaseController::class, 'check']);
+    Route::post('/buy', [MembershipPurchaseController::class, 'buy']);
 });
 

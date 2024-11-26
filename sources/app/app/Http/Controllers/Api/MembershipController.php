@@ -25,8 +25,14 @@ class MembershipController extends Controller
         // Вычисляем поле с учетом скидки
         $membershipQuery->addSelect(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2) as discounted_price'));
 
+        $membership = $membershipQuery->first();
+
+        if(!$membership){
+            return response()->json(['message' => 'Access denied'], 403);
+        }
+
         return response()->json([
-            $membershipQuery->first()
+            'membership' => $membershipQuery->first()
         ]);
     }
 
