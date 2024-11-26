@@ -13,6 +13,15 @@ class MembershipPurchase extends Model
     // Автоматическое обновления create_at и update_at
     public $timestamps = true;
 
+    // Поля, в которые можно добавлять данные
+    protected $fillable = [
+        'membership_id',
+        'user_id',
+        'status',
+        'is_active',
+        'expired_at'
+    ];
+
     // Внешние ключи
     public function user(): BelongsTo
     {
