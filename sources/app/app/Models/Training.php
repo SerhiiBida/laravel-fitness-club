@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TrainingType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,12 +16,12 @@ class Training extends Model
     // Автоматическое обновления create_at и update_at
     public $timestamps = true;
 
-    // Внешние ключи
-    public function trainingType(): BelongsTo
-    {
-        return $this->belongsTo(TrainingType::class);
-    }
+    // Стандартные значения для полей
+    protected $casts = [
+        'type' => TrainingType::class,
+    ];
 
+    // Внешние ключи
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
