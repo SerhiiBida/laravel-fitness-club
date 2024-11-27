@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MembershipPurchaseStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,8 +19,12 @@ class MembershipPurchase extends Model
         'membership_id',
         'user_id',
         'status',
-        'is_active',
         'expired_at'
+    ];
+
+    // Стандартные значения для полей
+    protected $casts = [
+        'status' => MembershipPurchaseStatus::class,
     ];
 
     // Внешние ключи

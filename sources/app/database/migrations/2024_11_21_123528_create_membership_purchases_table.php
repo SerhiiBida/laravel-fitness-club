@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('membership_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->string('status')->default('pending');
-            $table->boolean('is_active')->default(false);
+            $table->enum('status', ['paid', 'pending', 'cancelled'])->default('pending');
             $table->dateTime('expired_at');
             $table->timestamps();
         });

@@ -10,7 +10,7 @@ class Discount extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     // Отношения
     public function membership(): HasMany

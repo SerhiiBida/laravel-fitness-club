@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\MembershipPurchaseStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Membership;
 use App\Models\MembershipPurchase;
@@ -46,7 +47,7 @@ class MembershipPurchaseController extends Controller
 
         $oldMembership = MembershipPurchase::where('user_id', $userId)
             ->where('membership_id', $membershipId)
-            ->where('is_active', 1)
+            ->where('status', MembershipPurchaseStatus::Paid)
             ->where('expired_at', '>', $currentDate);
 
         // Старый абонемент еще действительный
@@ -92,8 +93,7 @@ class MembershipPurchaseController extends Controller
         MembershipPurchase::create([
             'membership_id' => $membershipId,
             'user_id' => $userId,
-            'status' => 'paid',
-            'is_active' => 1,
+            'status' => MembershipPurchaseStatus::Paid,
             'expired_at' => $endDate->format('Y-m-d H:i:s')
         ]);
 
@@ -120,7 +120,7 @@ class MembershipPurchaseController extends Controller
         // Куплен ли абонемент
         $check = MembershipPurchase::where('user_id', $userId)
             ->where('membership_id', $membershipId)
-            ->where('is_active', 1)
+            ->where('status', MembershipPurchaseStatus::Paid)
             ->where('expired_at', '>', $currentData)
             ->exists();
 

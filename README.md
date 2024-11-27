@@ -17,6 +17,9 @@ docker compose up -d
 docker exec -it laravel-fitness-club-app-1 sh
 php artisan serve
 
+Создание enum для поля таблицы(Laravel 11):
+php artisan make:enum TrainingStatus
+
 Создание модели и миграции:
 php artisan make:model User -m
 
