@@ -13,7 +13,7 @@ class Discount extends Model
     public $timestamps = true;
 
     // Отношения
-    public function membership(): HasMany
+    public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
     }

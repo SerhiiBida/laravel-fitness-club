@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Membership extends Model
+class Training extends Model
 {
     use HasFactory;
 
@@ -16,20 +16,30 @@ class Membership extends Model
     public $timestamps = true;
 
     // Внешние ключи
-    public function discount(): belongsTo
+    public function trainingType(): BelongsTo
     {
-        return $this->belongsTo(Discount::class);
+        return $this->belongsTo(TrainingType::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     // Отношения
-    public function membershipPurchases(): hasMany
+    public function trainingRegistrations(): HasMany
     {
-        return $this->hasMany(MembershipPurchase::class);
+        return $this->hasMany(TrainingRegistration::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
     }
 
     // Отношение многие ко многим
-    public function trainings(): BelongsToMany
+    public function memberships(): BelongsToMany
     {
-        return $this->belongsToMany(Training::class);
+        return $this->belongsToMany(Membership::class);
     }
 }

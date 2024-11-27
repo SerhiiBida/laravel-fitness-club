@@ -13,7 +13,7 @@ class Role extends Model
     public $timestamps = true;
 
     // Отношение с другими таблицами
-    public function user(): HasMany
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
