@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\TrainingRegistrationStatus;
-use App\Enums\TrainingType;
 use App\Http\Controllers\Controller;
 use App\Models\Training;
 use App\Models\TrainingRegistration;
+use App\Models\TrainingType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +49,7 @@ class TrainingController extends Controller
     public function show(string $id): JsonResponse
     {
         // Тренировка
-        $training = Training::with('user')
+        $training = Training::with('user', 'memberships')
             ->where('is_published', 1)
             ->where('id', $id)
             ->first();
@@ -78,7 +78,7 @@ class TrainingController extends Controller
         }
 
         $sortOptions = ['name', 'trainer'];
-        $filterOptions = ['individual', 'group'];
+        $filterOptions = TrainingType::pluck('name')->toArray();
 
         $sort = $request->input('sort');
         $filter = $request->input('filter');
@@ -87,10 +87,11 @@ class TrainingController extends Controller
 
         // Основной запрос
         $trainingsQuery = Training::query()
+            ->join('training_types', 'trainings.training_type_id', '=', 'training_types.id')
             ->join('users', 'trainings.user_id', '=', 'users.id')
-            ->select('trainings.*', 'users.username')
+            ->select('trainings.*', 'training_types.name as training_type', 'users.username as username')
             ->where('is_published', 1)
-            ->where('type', '!=', TrainingType::Private);
+            ->where('is_private', 0);
 
         // Поиск
         if($search) {
@@ -99,7 +100,7 @@ class TrainingController extends Controller
 
         // Фильтрация
         if($filter && in_array($filter, $filterOptions)) {
-            $trainingsQuery->where('type', $filter);
+            $trainingsQuery->where('training_types.name', $filter);
         }
 
         // Сортировка
