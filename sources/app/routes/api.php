@@ -54,7 +54,7 @@ Route::group([
 
 // Купленные абонементы
 Route::group([
-    'prefix' => '/membership-purchase',
+    'prefix' => '/membership-purchases',
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::post('/check', [MembershipPurchaseController::class, 'check']);
@@ -63,7 +63,7 @@ Route::group([
 
 // Типы тренировок
 Route::group([
-    'prefix' => '/training-type',
+    'prefix' => '/training-types',
 ], function () {
     Route::get('/', [TrainingTypeController::class, 'index']);
 });
@@ -79,7 +79,7 @@ Route::group([
 
 // Зарегистрированные на тренировки
 Route::group([
-    'prefix' => '/training-registration',
+    'prefix' => '/training-registrations',
 ], function () {
     Route::post('/check', [TrainingRegistrationController::class, 'check']);
     Route::post('/register', [TrainingRegistrationController::class, 'register']);
