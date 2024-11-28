@@ -97,6 +97,13 @@ class MembershipPurchaseController extends Controller
             'expired_at' => $endDate->format('Y-m-d H:i:s')
         ]);
 
+        // Даем бонусы user за покупку
+        if($membership->bonuses > 0) {
+            $user->bonuses += $membership->bonuses;
+
+            $user->save();
+        }
+
         return response()->json(['message' => 'Success']);
     }
 
