@@ -20,8 +20,8 @@ class TrainingRegistrationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'training_id' => Training::factory(),
+            'user_id' => fake()->randomElement(User::pluck('id')->toArray()),
+            'training_id' => fake()->randomElement(Training::pluck('id')->toArray()),
             'status' => fake()->randomElement(array_column(TrainingRegistrationStatus::cases(), 'value')),
         ];
     }

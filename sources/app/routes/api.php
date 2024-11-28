@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
+use App\Http\Controllers\Api\TrainingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,5 +57,12 @@ Route::group([
 ], function () {
     Route::post('/check', [MembershipPurchaseController::class, 'check']);
     Route::post('/buy', [MembershipPurchaseController::class, 'buy']);
+});
+
+// Тренировки
+Route::group([
+    'prefix' => '/trainings',
+], function () {
+    Route::get('/search', [TrainingController::class, 'search']);
 });
 

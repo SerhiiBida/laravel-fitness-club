@@ -6,6 +6,7 @@ use App\Models\Membership;
 use App\Models\Training;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class TrainingSeeder extends Seeder
@@ -15,16 +16,13 @@ class TrainingSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory()
-            ->state([
-                'role_id' => 3,
-            ])->create();
+        $admins = User::where('role_id', 3)->get();
 
         Training::factory()
             ->count(100)
-            ->state(
-                ['user_id' => $user->id]
-            )->has(
+            ->state(new Sequence(
+                fn (Sequence $sequence) => ['user_id' => $admins->random()]
+            ))->has(
                 Membership::factory()->count(2)
             )->create();
     }

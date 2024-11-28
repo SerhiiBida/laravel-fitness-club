@@ -17,9 +17,6 @@ class TrainingRegistrationSeeder extends Seeder
     {
         TrainingRegistration::factory()
             ->count(57)
-            ->state(new Sequence(
-                fn (Sequence $sequence) => ['user_id' => User::all()->random()],
-                fn (Sequence $sequence) => ['training_id' => Training::all()->random()],
-            ))->create();
+            ->create();
     }
 }
