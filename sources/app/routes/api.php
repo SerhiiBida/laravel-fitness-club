@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
 use App\Http\Controllers\Api\TrainingController;
 use App\Http\Controllers\Api\TrainingRegistrationController;
+use App\Http\Controllers\Api\TrainingTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,13 @@ Route::group([
 ], function () {
     Route::post('/check', [MembershipPurchaseController::class, 'check']);
     Route::post('/buy', [MembershipPurchaseController::class, 'buy']);
+});
+
+// Типы тренировок
+Route::group([
+    'prefix' => '/training-type',
+], function () {
+    Route::get('/', [TrainingTypeController::class, 'index']);
 });
 
 // Тренировки
