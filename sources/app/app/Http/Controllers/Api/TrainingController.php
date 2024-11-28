@@ -2,15 +2,67 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\TrainingRegistrationStatus;
 use App\Enums\TrainingType;
 use App\Http\Controllers\Controller;
 use App\Models\Training;
+use App\Models\TrainingRegistration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TrainingController extends Controller
 {
+    // Проверка приватности
+    public function checkAccess(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'trainingId' => 'required|integer|exists:trainings,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Incorrect data format'], 422);
+        }
+
+        $trainingId = $request->input('trainingId');
+
+        // Проверка приватности
+        $training = Training::find($trainingId);
+
+        $isPrivate = $training->type === TrainingType::Private;
+
+        // Проверка регистрации
+        $userId = Auth::id();
+
+        $checkRegister = TrainingRegistration::where('user_id', $userId)
+            ->where('training_id', $trainingId)
+            ->where('status', TrainingRegistrationStatus::Active)
+            ->exists();
+
+        return response()->json([
+            'is_access' => $checkRegister || !$isPrivate,
+        ]);
+    }
+
+    // Дать данные
+    public function show(string $id): JsonResponse
+    {
+        // Тренировка
+        $training = Training::with('user')
+            ->where('is_published', 1)
+            ->where('id', $id)
+            ->first();
+
+        if(!$training){
+            return response()->json(['message' => 'Access denied'], 403);
+        }
+
+        return response()->json([
+            'training' => $training
+        ]);
+    }
+
     public function search(Request $request): JsonResponse
     {
         $validated = Validator::make($request->all(), [

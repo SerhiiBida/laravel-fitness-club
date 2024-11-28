@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('image_path')->default('/trainings/default/default.png');
-            $table->enum('type', ['individual', 'group', 'private'])->default('group');
+            $table->foreignId('training_type_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->boolean('is_published')->default(false);
+            $table->boolean('is_private')->default(false);
             $table->timestamps();
         });
     }

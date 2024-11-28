@@ -33,7 +33,7 @@ class MembershipController extends Controller
         }
 
         return response()->json([
-            'membership' => $membershipQuery->first()
+            'membership' => $membership
         ]);
     }
 

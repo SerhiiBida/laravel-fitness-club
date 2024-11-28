@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
 use App\Http\Controllers\Api\TrainingController;
+use App\Http\Controllers\Api\TrainingRegistrationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -64,5 +65,14 @@ Route::group([
     'prefix' => '/trainings',
 ], function () {
     Route::get('/search', [TrainingController::class, 'search']);
+    Route::get('/check-access', [TrainingController::class, 'checkAccess']);
+    Route::get('/{id}', [TrainingController::class, 'show']);
 });
 
+// Зарегистрированные на тренировки
+Route::group([
+    'prefix' => '/training-registration',
+], function () {
+    Route::post('/check', [TrainingRegistrationController::class, 'check']);
+    Route::post('/register', [TrainingRegistrationController::class, 'register']);
+});

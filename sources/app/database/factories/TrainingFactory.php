@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\TrainingType;
+use App\Models\TrainingType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,9 +22,10 @@ class TrainingFactory extends Factory
             'name' => fake()->text(30),
             'description' => fake()->paragraph(10),
             'image_path' => '/trainings/default/default.png',
-            'type' => fake()->randomElement(array_column(TrainingType::cases(), 'value')),
+            'training_type_id' => fake()->randomElement(TrainingType::pluck('id')->toArray()),
             'user_id' => User::factory(),
-            'is_published' => fake()->boolean
+            'is_published' => fake()->boolean,
+            'is_private' => fake()->boolean
         ];
     }
 }

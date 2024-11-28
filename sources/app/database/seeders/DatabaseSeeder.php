@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             DiscountSeeder::class,
             MembershipSeeder::class,
             MembershipPurchaseSeeder::class,
+            TrainingTypeSeeder::class,
             TrainingSeeder::class,
             TrainingRegistrationSeeder::class,
             ScheduleSeeder::class,
