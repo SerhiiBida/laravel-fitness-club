@@ -17,7 +17,7 @@ class TrainingController extends Controller
             'sort' => 'nullable|string',
             'filter' => 'nullable|string',
             'search' => 'nullable|string',
-            'page' => 'nullable|integer',
+            'page' => 'nullable|integer|min:1',
             'perPage' => 'nullable|integer|min:1',
         ]);
 
@@ -31,7 +31,7 @@ class TrainingController extends Controller
         $sort = $request->input('sort');
         $filter = $request->input('filter');
         $search = $request->input('search');
-        $perPage = $request->input('perPage');
+        $perPage = (int)$request->input('perPage');
 
         // Основной запрос
         $trainingsQuery = Training::query()
