@@ -41,7 +41,7 @@ class MembershipController extends Controller
     {
         $validated = Validator::make($request->all(), [
             'sort' => 'nullable|string',
-            'filter' => 'nullable|integer|between:0,3',
+            'filter' => 'nullable|integer|between:0,4',
             'search' => 'nullable|string',
             'page' => 'nullable|integer|min:1',
             'perPage' => 'nullable|integer|min:1',
@@ -53,10 +53,10 @@ class MembershipController extends Controller
 
         $sortOptions = ['name', 'discounted_price', 'validity_days', 'bonuses'];
         $filterOptions = [
-            ['left' => 0, 'right' => 99],
-            ['left' => 100, 'right' => 499],
-            ['left' => 500, 'right' => 999],
-            ['left' => 1000],
+            1 => ['left' => 0, 'right' => 99],
+            2 => ['left' => 100, 'right' => 499],
+            3 => ['left' => 500, 'right' => 999],
+            4 => ['left' => 1000],
         ];
 
         $sort = $request->input('sort');
@@ -88,8 +88,8 @@ class MembershipController extends Controller
         }
 
         // Фильтрация
-        if ($filter){
-            if($filter === count($filterOptions) - 1) {
+        if ($filter) {
+            if($filter === 4) {
                 $membershipQuery->having('discounted_price', '>=', $filterOptions[$filter]['left']);
             } else {
                 $membershipQuery
