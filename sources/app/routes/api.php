@@ -73,7 +73,7 @@ Route::group([
     'prefix' => '/trainings',
 ], function () {
     Route::get('/search', [TrainingController::class, 'search']);
-    Route::get('/check-access', [TrainingController::class, 'checkAccess']);
+    Route::post('/check-access', [TrainingController::class, 'checkAccess']);
     Route::get('/{id}', [TrainingController::class, 'show']);
 });
 

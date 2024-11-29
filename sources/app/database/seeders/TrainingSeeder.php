@@ -19,7 +19,7 @@ class TrainingSeeder extends Seeder
         $admins = User::where('role_id', 3)->get();
 
         Training::factory()
-            ->count(100)
+            ->count(300)
             ->state(new Sequence(
                 fn (Sequence $sequence) => ['user_id' => $admins->random()]
             ))->has(

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TrainingRegistration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TrainingRegistrationController extends Controller
@@ -15,7 +16,6 @@ class TrainingRegistrationController extends Controller
     public function check(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'userId' => 'required|integer|exists:users,id',
             'trainingId' => 'required|integer|exists:trainings,id',
         ]);
 
@@ -23,7 +23,7 @@ class TrainingRegistrationController extends Controller
             return response()->json(['message' => 'Incorrect data format'], 422);
         }
 
-        $userId = $request->input('userId');
+        $userId = Auth::id();
         $trainingId = $request->input('trainingId');
 
         // Зарегистрирован ли

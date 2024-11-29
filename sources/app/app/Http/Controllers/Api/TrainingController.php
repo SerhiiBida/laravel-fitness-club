@@ -30,9 +30,9 @@ class TrainingController extends Controller
         // Проверка приватности
         $training = Training::find($trainingId);
 
-        $isPrivate = $training->type === TrainingType::Private;
+        $isPrivate = $training->is_private;
 
-        // Проверка регистрации
+        // Проверка регистрации на тренировку
         $userId = Auth::id();
 
         $checkRegister = TrainingRegistration::where('user_id', $userId)
