@@ -64,6 +64,7 @@ Route::group([
 // Типы тренировок
 Route::group([
     'prefix' => '/training-types',
+    'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/', [TrainingTypeController::class, 'index']);
 });
@@ -71,6 +72,7 @@ Route::group([
 // Тренировки
 Route::group([
     'prefix' => '/trainings',
+    'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/search', [TrainingController::class, 'search']);
     Route::post('/check-access', [TrainingController::class, 'checkAccess']);
@@ -80,7 +82,9 @@ Route::group([
 // Зарегистрированные на тренировки
 Route::group([
     'prefix' => '/training-registrations',
+    'middleware' => 'auth:sanctum'
 ], function () {
     Route::post('/check', [TrainingRegistrationController::class, 'check']);
     Route::post('/register', [TrainingRegistrationController::class, 'register']);
+    Route::post('/deactivate', [TrainingRegistrationController::class, 'deactivate']);
 });

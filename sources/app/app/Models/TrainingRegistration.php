@@ -13,6 +13,13 @@ class TrainingRegistration extends Model
 
     public $timestamps = true;
 
+    // Поля для заполнения
+    protected $fillable = [
+        'user_id',
+        'training_id',
+        'status',
+    ];
+
     // Стандартные значения для полей
     protected $casts = [
         'status' => TrainingRegistrationStatus::class,
