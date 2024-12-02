@@ -35,4 +35,16 @@ class TrainingRegistration extends Model
     {
         return $this->belongsTo(Training::class);
     }
+
+
+    // МЕТОДЫ:
+
+    // Проверка регистрации на тренировку
+    public static function checkRegistration(int $userId, int $trainingId): bool
+    {
+        return self::where('user_id', $userId)
+            ->where('training_id', $trainingId)
+            ->where('status', TrainingRegistrationStatus::Active)
+            ->exists();
+    }
 }

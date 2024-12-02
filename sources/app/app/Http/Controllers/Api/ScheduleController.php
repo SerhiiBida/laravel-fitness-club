@@ -8,12 +8,20 @@ use App\Models\MembershipPurchase;
 use App\Models\Schedule;
 use App\Models\Training;
 use App\Models\TrainingRegistration;
+use App\Services\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
 {
+    protected TrainingService $trainingService;
+
+    public function __construct(TrainingService $trainingService)
+    {
+        $this->trainingService = $trainingService;
+    }
+
     public function listByUser(): JsonResponse
     {
         $validator = Validator::make(request()->all(), [
@@ -32,22 +40,14 @@ class ScheduleController extends Controller
 
         $userId = Auth::id();
 
-        // Истек абонемент у user
-        $requiredMemberships = Training::getIdsRequiredMemberships($trainingId);
-        $userMemberships = MembershipPurchase::getIdsMembershipsUser($userId);
-
-        if(!array_intersect($userMemberships, $requiredMemberships)){
+        // Нету нужного абонемента у user
+        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
             return response()->json(['message' => 'Buy one of the required memberships'], 403);
         }
 
-        // Проверка, зарегистрирован ли пользователь на тренировку
-        $checkRegister = TrainingRegistration::where('user_id', $userId)
-            ->where('training_id', $trainingId)
-            ->where('status', TrainingRegistrationStatus::Active)
-            ->exists();
-
-        if(!$checkRegister) {
-            return response()->json(['message' => 'Access denied'], 403);
+        // User не зарегистрирован на тренировку
+        if(!TrainingRegistration::checkRegistration($userId, $trainingId)) {
+            return response()->json(['message' => 'You need to register for training'], 403);
         }
 
         // Основной запрос для расписания и посещения пользователя
@@ -93,25 +93,71 @@ class ScheduleController extends Controller
         return response()->json($schedules);
     }
 
-//    // Отмечает, посещение пользователя
-//    public function createVisitUser(): JsonResponse
-//    {
-//        $validator = Validator::make(request()->all(), [
-//            'scheduleId' => 'required|integer|exists:schedules,id',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return response()->json(['message' => 'Incorrect data format'], 422);
-//        }
-//
-//        $scheduleId = request()->input('scheduleId');
-//
-//
-//    }
-//
-//    // Удаляет, посещение пользователя
-//    public function destroyVisitUser(): JsonResponse
-//    {
-//
-//    }
+    // Отмечает, посещение пользователя
+    public function createVisitUser(): JsonResponse
+    {
+        $validator = Validator::make(request()->all(), [
+            'scheduleId' => 'required|integer|exists:schedules,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Incorrect data format'], 422);
+        }
+
+        $scheduleId = request()->input('scheduleId');
+        $userId = Auth::id();
+
+        $schedule = Schedule::find($scheduleId);
+
+        $trainingId = $schedule->training_id;
+
+        // Нету нужного абонемента у user
+        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
+            return response()->json(['message' => 'Buy one of the required memberships'], 403);
+        }
+
+        // User не зарегистрирован на тренировку
+        if(!TrainingRegistration::checkRegistration($userId, $trainingId)) {
+            return response()->json(['message' => 'You need to register for training'], 403);
+        }
+
+        // Отмечаем визит
+        $schedule->users()->attach($userId);
+
+        return response()->json(['message' => 'Created'], 201);
+    }
+
+    // Удаляет, посещение пользователя
+    public function destroyVisitUser(): JsonResponse
+    {
+        $validator = Validator::make(request()->all(), [
+            'scheduleId' => 'required|integer|exists:schedules,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Incorrect data format'], 422);
+        }
+
+        $scheduleId = request()->input('scheduleId');
+        $userId = Auth::id();
+
+        $schedule = Schedule::find($scheduleId);
+
+        $trainingId = $schedule->training_id;
+
+        // Нету нужного абонемента у user
+        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
+            return response()->json(['message' => 'Buy one of the required memberships'], 403);
+        }
+
+        // User не зарегистрирован на тренировку
+        if(!TrainingRegistration::checkRegistration($userId, $trainingId)) {
+            return response()->json(['message' => 'You need to register for training'], 403);
+        }
+
+        // Удаляем визит
+        $schedule->users()->detach($userId);
+
+        return response()->json(['message' => 'Deleted'], 204);
+    }
 }

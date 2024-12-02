@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\MembershipPurchaseStatus;
 use App\Enums\TrainingRegistrationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\MembershipPurchase;
 use App\Models\Training;
 use App\Models\TrainingRegistration;
+use App\Services\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Validator;
 
 class TrainingRegistrationController extends Controller
 {
+    protected TrainingService $trainingService;
+
+    public function __construct(TrainingService $trainingService)
+    {
+        $this->trainingService = $trainingService;
+    }
+
     // Регистрация на тренировку
     public function register(Request $request): JsonResponse
     {
@@ -40,11 +47,7 @@ class TrainingRegistrationController extends Controller
         }
 
         // У user нет нужного абонемента
-        $requiredMemberships = Training::getIdsRequiredMemberships($trainingId);
-
-        $userMemberships = MembershipPurchase::getIdsMembershipsUser($userId);
-
-        if(!array_intersect($userMemberships, $requiredMemberships)){
+        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
             return response()->json(['message' => 'Buy one of the required memberships'], 422);
         }
 

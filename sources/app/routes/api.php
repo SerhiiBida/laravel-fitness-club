@@ -96,4 +96,6 @@ Route::group([
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/by-user', [ScheduleController::class, 'listByUser']);
+    Route::post('/visit', [ScheduleController::class, 'createVisitUser']);
+    Route::post('/cancel-visit', [ScheduleController::class, 'destroyVisitUser']);
 });
