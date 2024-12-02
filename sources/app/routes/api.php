@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
+use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\TrainingController;
 use App\Http\Controllers\Api\TrainingRegistrationController;
 use App\Http\Controllers\Api\TrainingTypeController;
@@ -87,4 +88,12 @@ Route::group([
     Route::post('/check', [TrainingRegistrationController::class, 'check']);
     Route::post('/register', [TrainingRegistrationController::class, 'register']);
     Route::post('/deactivate', [TrainingRegistrationController::class, 'deactivate']);
+});
+
+// Расписание на тренировки
+Route::group([
+    'prefix' => '/schedules',
+    'middleware' => 'auth:sanctum'
+], function () {
+    Route::get('/by-user', [ScheduleController::class, 'listByUser']);
 });
