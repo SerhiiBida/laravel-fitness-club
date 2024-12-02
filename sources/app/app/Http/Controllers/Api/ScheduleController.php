@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\TrainingRegistrationStatus;
 use App\Http\Controllers\Controller;
+use App\Models\MembershipPurchase;
 use App\Models\Schedule;
+use App\Models\Training;
 use App\Models\TrainingRegistration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +31,14 @@ class ScheduleController extends Controller
         $page = request()->input('page');
 
         $userId = Auth::id();
+
+        // Истек абонемент у user
+        $requiredMemberships = Training::getIdsRequiredMemberships($trainingId);
+        $userMemberships = MembershipPurchase::getIdsMembershipsUser($userId);
+
+        if(!array_intersect($userMemberships, $requiredMemberships)){
+            return response()->json(['message' => 'Buy one of the required memberships'], 403);
+        }
 
         // Проверка, зарегистрирован ли пользователь на тренировку
         $checkRegister = TrainingRegistration::where('user_id', $userId)
@@ -82,4 +92,26 @@ class ScheduleController extends Controller
 
         return response()->json($schedules);
     }
+
+//    // Отмечает, посещение пользователя
+//    public function createVisitUser(): JsonResponse
+//    {
+//        $validator = Validator::make(request()->all(), [
+//            'scheduleId' => 'required|integer|exists:schedules,id',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return response()->json(['message' => 'Incorrect data format'], 422);
+//        }
+//
+//        $scheduleId = request()->input('scheduleId');
+//
+//
+//    }
+//
+//    // Удаляет, посещение пользователя
+//    public function destroyVisitUser(): JsonResponse
+//    {
+//
+//    }
 }

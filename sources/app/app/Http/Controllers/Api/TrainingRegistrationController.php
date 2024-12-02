@@ -27,7 +27,7 @@ class TrainingRegistrationController extends Controller
         }
 
         $userId = Auth::id();
-        $trainingId = $request->input('trainingId');
+        $trainingId = (int)$request->input('trainingId');
 
         // Пользователь уже зарегистрировался
         $checkTrainingRegistration = TrainingRegistration::where('training_id', $trainingId)
@@ -40,21 +40,9 @@ class TrainingRegistrationController extends Controller
         }
 
         // У user нет нужного абонемента
-        $requiredMemberships = Training::with('memberships')
-            ->where('id', $trainingId)
-            ->get()
-            ->flatMap(fn($training) => $training->memberships->pluck('id'))
-            ->unique()
-            ->toArray();
+        $requiredMemberships = Training::getIdsRequiredMemberships($trainingId);
 
-        $currentData = date('Y-m-d H:i:s');
-
-        $userMemberships = MembershipPurchase::where('user_id', $userId)
-            ->where('status', MembershipPurchaseStatus::Paid)
-            ->where('expired_at', '>', $currentData)
-            ->pluck('membership_id')
-            ->unique()
-            ->toArray();
+        $userMemberships = MembershipPurchase::getIdsMembershipsUser($userId);
 
         if(!array_intersect($userMemberships, $requiredMemberships)){
             return response()->json(['message' => 'Buy one of the required memberships'], 422);

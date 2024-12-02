@@ -37,4 +37,20 @@ class MembershipPurchase extends Model
     {
         return $this->belongsTo(Membership::class);
     }
+
+
+    // МЕТОДЫ:
+
+    // IDs абонементов, что есть у пользователя
+    public static function getIdsMembershipsUser(int $userId): Array
+    {
+        $currentData = date('Y-m-d H:i:s');
+
+        return self::where('user_id', $userId)
+            ->where('status', MembershipPurchaseStatus::Paid)
+            ->where('expired_at', '>', $currentData)
+            ->pluck('membership_id')
+            ->unique()
+            ->toArray();
+    }
 }

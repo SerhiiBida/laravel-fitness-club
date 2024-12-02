@@ -42,4 +42,18 @@ class Training extends Model
     {
         return $this->belongsToMany(Membership::class);
     }
+
+
+    // МЕТОДЫ:
+
+    // IDs абонементов, что требует тренировка
+    public static function getIdsRequiredMemberships(int $trainingId): Array
+    {
+        return self::with('memberships')
+            ->where('id', $trainingId)
+            ->get()
+            ->flatMap(fn($training) => $training->memberships->pluck('id'))
+            ->unique()
+            ->toArray();
+    }
 }
