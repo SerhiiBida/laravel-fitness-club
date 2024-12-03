@@ -26,7 +26,7 @@ class GlobalSearchController extends Controller
             ->limit(5);
 
         // Убирает записи с одинаковым id
-        $generalProducts = $memberships->union($trainings)->get();
+        $generalProducts = $memberships->union($trainings)->distinct()->get();
 
         return response()->json($generalProducts);
     }
