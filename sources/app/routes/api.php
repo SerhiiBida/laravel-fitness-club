@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GlobalSearchController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
 use App\Http\Controllers\Api\ScheduleController;
@@ -101,3 +102,6 @@ Route::group([
     Route::post('/visit', [ScheduleController::class, 'createVisitUser']);
     Route::post('/cancel-visit', [ScheduleController::class, 'destroyVisitUser']);
 });
+
+// Глобальный поиск
+Route::middleware(['auth:sanctum'])->get('/global-search/{name}', [GlobalSearchController::class, 'search']);
