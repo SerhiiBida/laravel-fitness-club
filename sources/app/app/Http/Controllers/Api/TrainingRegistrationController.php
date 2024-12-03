@@ -22,6 +22,36 @@ class TrainingRegistrationController extends Controller
         $this->trainingService = $trainingService;
     }
 
+    // Список активных тренировок пользователя
+    public function listByUser(Request $request): JsonResponse
+    {
+        $validator = Validator::make(request()->all(), [
+            'perPage' => 'nullable|integer|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Incorrect data format'], 422);
+        }
+
+        $userId = Auth::id();
+        $perPage = request()->input('perPage');
+
+        $trainingsQuery = TrainingRegistration::with('training')
+            ->where('user_id', $userId)
+            ->where('status', TrainingRegistrationStatus::Active)
+            ->whereHas('training', function ($query) use ($request) {
+                $query->where('is_published', 1);
+            });
+
+        // Продуктов на странице
+        $perPage = $perPage ?? 8;
+
+        // Пагинация
+        $trainings = $trainingsQuery->paginate($perPage);
+
+        return response()->json($trainings);
+    }
+
     // Регистрация на тренировку
     public function register(Request $request): JsonResponse
     {

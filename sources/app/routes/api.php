@@ -58,6 +58,7 @@ Route::group([
     'prefix' => '/membership-purchases',
     'middleware' => 'auth:sanctum'
 ], function () {
+    Route::get('/by-user', [MembershipPurchaseController::class, 'listByUser']);
     Route::post('/check', [MembershipPurchaseController::class, 'check']);
     Route::post('/buy', [MembershipPurchaseController::class, 'buy']);
 });
@@ -85,6 +86,7 @@ Route::group([
     'prefix' => '/training-registrations',
     'middleware' => 'auth:sanctum'
 ], function () {
+    Route::get('/by-user', [TrainingRegistrationController::class, 'listByUser']);
     Route::post('/check', [TrainingRegistrationController::class, 'check']);
     Route::post('/register', [TrainingRegistrationController::class, 'register']);
     Route::post('/deactivate', [TrainingRegistrationController::class, 'deactivate']);

@@ -57,9 +57,7 @@ class ScheduleController extends Controller
             ->orderBy('start_time');
 
         // Элементов на странице
-        if(!$perPage) {
-            $perPage = 3;
-        }
+        $perPage = $perPage ?? 3;
 
         // Начинаем пагинацию со страницы, где ближайшее расписание
         if(!$page){

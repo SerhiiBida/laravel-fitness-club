@@ -15,6 +15,36 @@ use Illuminate\Support\Facades\Validator;
 
 class MembershipPurchaseController extends Controller
 {
+    // Список активных абонементов user
+    public function listByUser(Request $request): JsonResponse
+    {
+        $validator = Validator::make(request()->all(), [
+            'perPage' => 'nullable|integer|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Incorrect data format'], 422);
+        }
+
+        $userId = Auth::id();
+        $perPage = request()->input('perPage');
+
+        $currentDate = date('Y-m-d H:i:s');
+
+        $membershipsQuery = MembershipPurchase::with('membership')
+            ->where('user_id', $userId)
+            ->where('status', MembershipPurchaseStatus::Paid)
+            ->where('expired_at', '>', $currentDate);
+
+        // Продуктов на странице
+        $perPage = $perPage ?? 8;
+
+        // Пагинация
+        $memberships = $membershipsQuery->paginate($perPage);
+
+        return response()->json($memberships);
+    }
+
     public function buy(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
