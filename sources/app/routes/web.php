@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\Auth\AuthStaffController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -20,12 +20,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Auth
 Route::group([
-    'prefix' => 'auth',
+    'prefix' => 'admin',
 ], function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::middleware(['auth:sanctum'])->get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/login', [AuthStaffController::class, 'showLogin'])->name('showLogin');
+    Route::post('/login', [AuthStaffController::class, 'login'])->name('login');
+    Route::middleware(['auth:sanctum'])->get('/logout', [AuthStaffController::class, 'logout'])->name('logout');
 });
 
 // Admin Dashboard(Нужно проверка на доступ к Админке!! Нужно ПО свое!!)
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+Route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
