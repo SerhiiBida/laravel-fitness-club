@@ -22,7 +22,7 @@ class AuthStaffController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        abort(404);
+        abort(403);
     }
 
     // Форма авторизации

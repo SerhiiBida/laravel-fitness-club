@@ -28,4 +28,4 @@ Route::group([
 });
 
 // Admin Dashboard(Нужно проверка на доступ к Админке!! Нужно ПО свое!!)
-Route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+Route::middleware(['staff'])->get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
