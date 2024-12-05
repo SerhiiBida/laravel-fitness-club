@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\TrainingRegistrationStatus;
 use App\Http\Controllers\Controller;
-use App\Models\MembershipPurchase;
 use App\Models\Schedule;
-use App\Models\Training;
 use App\Models\TrainingRegistration;
-use App\Services\TrainingService;
+use app\Services\API\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

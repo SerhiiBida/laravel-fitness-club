@@ -11,9 +11,7 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center">
-        Welcome
-    </h2>
+    @yield('content')
 </div>
 
 <!--Scripts-->

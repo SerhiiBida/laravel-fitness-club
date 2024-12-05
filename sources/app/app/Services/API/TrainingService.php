@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace app\Services\API;
 
-use App\Models\Training;
 use App\Models\MembershipPurchase;
+use App\Models\Training;
 
 class TrainingService
 {

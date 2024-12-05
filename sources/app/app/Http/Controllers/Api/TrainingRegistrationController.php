@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\TrainingRegistrationStatus;
 use App\Http\Controllers\Controller;
-use App\Models\MembershipPurchase;
 use App\Models\Training;
 use App\Models\TrainingRegistration;
-use App\Services\TrainingService;
+use app\Services\API\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

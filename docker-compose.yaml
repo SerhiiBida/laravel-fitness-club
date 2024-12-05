@@ -20,8 +20,8 @@ services:
 
   app:
     build:
-      context: ./images
-      dockerfile: php-fpm.dockerfile
+      context: .
+      dockerfile: ./images/php-fpm.dockerfile
     working_dir: "/var/www/app"
     volumes:
       - ./sources/app:/var/www/app

@@ -20,11 +20,17 @@
 composer dump-autoload
 ```
 
-Запуск сервера:
+Запуск сервера Laravel:
 ```sh
 docker compose up -d
 docker exec -it laravel-fitness-club-app-1 sh
 php artisan serve
+```
+
+Запуск Node:
+```sh
+npm install
+npm run dev
 ```
 
 Создание enum для поля таблицы(Laravel 11):
