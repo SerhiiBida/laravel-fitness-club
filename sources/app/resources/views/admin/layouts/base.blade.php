@@ -1,17 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!--Styles-->
     @vite(['resources/sass/app.scss'])
+
     <title>
-        Fitness Club
+        Fitness Club Admin Panel
     </title>
 </head>
 <body>
-<div class="container">
-    @yield('content')
+<div class="app">
+    @includeIf('admin.layouts.header')
+
+    <main class="main">
+        @yield('content')
+    </main>
+
+    @includeIf('admin.layouts.footer')
 </div>
 
 <!--Scripts-->

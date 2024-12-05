@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Services\API;
+namespace App\Services\API;
 
 use App\Models\MembershipPurchase;
 use App\Models\Training;

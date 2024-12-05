@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Schedule;
 use App\Models\TrainingRegistration;
-use app\Services\API\TrainingService;
+use App\Services\API\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -38,12 +38,12 @@ class ScheduleController extends Controller
         $userId = Auth::id();
 
         // Нету нужного абонемента у user
-        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
+        if (!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
             return response()->json(['message' => 'Buy one of the required memberships'], 403);
         }
 
         // User не зарегистрирован на тренировку
-        if(!TrainingRegistration::checkRegistration($userId, $trainingId)) {
+        if (!TrainingRegistration::checkRegistration($userId, $trainingId)) {
             return response()->json(['message' => 'You need to register for training'], 403);
         }
 
@@ -57,7 +57,7 @@ class ScheduleController extends Controller
         $perPage = $perPage ?? 3;
 
         // Начинаем пагинацию со страницы, где ближайшее расписание
-        if(!$page){
+        if (!$page) {
             $currentDate = date('Y-m-d H:i:s');
 
             $nearestSchedule = Schedule::where('training_id', $trainingId)
@@ -65,7 +65,7 @@ class ScheduleController extends Controller
                 ->orderBy('start_time')
                 ->first();
 
-            if($nearestSchedule){
+            if ($nearestSchedule) {
                 // Страница с ближайшим расписанием
                 $position = Schedule::where('training_id', $trainingId)
                     ->where('start_time', '<', $nearestSchedule->start_time)
@@ -107,12 +107,12 @@ class ScheduleController extends Controller
         $trainingId = $schedule->training_id;
 
         // Нету нужного абонемента у user
-        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
+        if (!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
             return response()->json(['message' => 'Buy one of the required memberships'], 403);
         }
 
         // User не зарегистрирован на тренировку
-        if(!TrainingRegistration::checkRegistration($userId, $trainingId)) {
+        if (!TrainingRegistration::checkRegistration($userId, $trainingId)) {
             return response()->json(['message' => 'You need to register for training'], 403);
         }
 
@@ -141,12 +141,12 @@ class ScheduleController extends Controller
         $trainingId = $schedule->training_id;
 
         // Нету нужного абонемента у user
-        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
+        if (!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
             return response()->json(['message' => 'Buy one of the required memberships'], 403);
         }
 
         // User не зарегистрирован на тренировку
-        if(!TrainingRegistration::checkRegistration($userId, $trainingId)) {
+        if (!TrainingRegistration::checkRegistration($userId, $trainingId)) {
             return response()->json(['message' => 'You need to register for training'], 403);
         }
 

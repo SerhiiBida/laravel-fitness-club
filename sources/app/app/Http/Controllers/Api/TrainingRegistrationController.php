@@ -6,7 +6,7 @@ use App\Enums\TrainingRegistrationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Training;
 use App\Models\TrainingRegistration;
-use app\Services\API\TrainingService;
+use App\Services\API\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,24 +71,24 @@ class TrainingRegistrationController extends Controller
             ->where('status', TrainingRegistrationStatus::Active)
             ->exists();
 
-        if($checkTrainingRegistration) {
+        if ($checkTrainingRegistration) {
             return response()->json(['message' => 'You are already registered'], 422);
         }
 
         // У user нет нужного абонемента
-        if(!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
+        if (!$this->trainingService->userHasAccessToTraining($userId, $trainingId)) {
             return response()->json(['message' => 'Buy one of the required memberships'], 422);
         }
 
         $training = Training::where('id', $trainingId)->first();
 
         // Не опубликована
-        if(!$training->is_published){
+        if (!$training->is_published) {
             return response()->json(['message' => 'You are denied access'], 403);
         }
 
         // На приватную тренировку нельзя зарегистрироваться(только тренер регистрирует)
-        if($training->is_private) {
+        if ($training->is_private) {
             return response()->json(['message' => 'You are denied access'], 403);
         }
 
