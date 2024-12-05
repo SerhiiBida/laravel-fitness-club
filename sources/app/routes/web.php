@@ -22,10 +22,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::group([
     'prefix' => 'admin',
 ], function () {
-    Route::get('/login', [AuthStaffController::class, 'showLogin'])->name('showLogin');
-    Route::post('/login', [AuthStaffController::class, 'login'])->name('login');
-    Route::middleware(['auth:sanctum'])->get('/logout', [AuthStaffController::class, 'logout'])->name('logout');
+    Route::get('/login', [AuthStaffController::class, 'showLogin'])->name('admin.showLogin');
+    Route::post('/login', [AuthStaffController::class, 'login'])->name('admin.login');
+    Route::middleware(['auth:sanctum'])->get('/logout', [AuthStaffController::class, 'logout'])->name('admin.logout');
 });
 
 // Admin Dashboard(Нужно проверка на доступ к Админке!! Нужно ПО свое!!)
-Route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+Route::get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');

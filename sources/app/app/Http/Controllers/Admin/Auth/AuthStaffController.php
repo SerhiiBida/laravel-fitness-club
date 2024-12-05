@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use app\Http\Requests\Admin\Auth\LoginRequest;
 use App\Services\Admin\Auth\AuthStaffService;
 
 class AuthStaffController extends Controller
@@ -34,13 +35,23 @@ class AuthStaffController extends Controller
         return view('admin.auth.login');
     }
 
-    public function login()
+    public function login(LoginRequest $request)
     {
+        $data = $request->validated();
 
+        if ($this->authStaffService->login($data)) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return back()->withErrors([
+            'general' => 'Invalid email address or password',
+        ]);
     }
 
     public function logout()
     {
+        $this->authStaffService->logout();
 
+        return redirect()->route('admin.showLogin');
     }
 }

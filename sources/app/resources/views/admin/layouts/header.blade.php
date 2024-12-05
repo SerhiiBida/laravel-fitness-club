@@ -20,7 +20,7 @@
                     @endauth
                 </ul>
                 @auth
-                    <a class="btn btn-outline-dark" href="{{ route('logout') }}">
+                    <a class="btn btn-outline-dark" href="{{ route('admin.logout') }}">
                         Log out
                     </a>
                 @endauth

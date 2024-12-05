@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('admin.login') }}">
                             @csrf
 
                             <div class="row mb-3">
@@ -49,7 +49,8 @@
 
                                 <div class="col-md-6">
                                     <input id="password" type="password"
-                                           class="form-control @error('password') is-invalid @enderror" name="password"
+                                           class="form-control @error('password') is-invalid @enderror"
+                                           name="password"
                                            required autocomplete="current-password">
 
                                     @error('password')
@@ -61,6 +62,12 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            @error('general')
+                            <p class="text-center text-danger">
+                                {{ $message }}
+                            </p>
+                            @enderror
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">

@@ -30,4 +30,14 @@ class AuthStaffService
             return false;
         }
     }
+
+    public function login(array $data): bool
+    {
+        return Auth::attempt($data);
+    }
+
+    public function logout(): void
+    {
+        Auth::guard('web')->logout();
+    }
 }
