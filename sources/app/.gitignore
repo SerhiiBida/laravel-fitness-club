@@ -17,3 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+permission.env.php
+app/Env/PermissionsEnv.php
