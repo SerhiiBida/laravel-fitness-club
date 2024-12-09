@@ -144,9 +144,13 @@
                         Back
                     </a>
                     @if (in_array('delete users', $permissions))
-                        <a href="{{ route('admin.users.destroy', $user->id) }}" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
                     @endif
                     @if (in_array('edit users', $permissions))
                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">

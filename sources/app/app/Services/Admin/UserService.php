@@ -7,6 +7,7 @@ use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
@@ -78,8 +79,15 @@ class UserService
     }
 
     // Удаление
-    public function destroy()
+    public function destroy(User $user)
     {
-        //
+        $imageName = basename($user->image_path);
+
+        // Удаляем изображение
+        if ($imageName !== 'default.png') {
+            Storage::disk('public')->delete($user->image_path);
+        }
+
+        $user->delete();
     }
 }

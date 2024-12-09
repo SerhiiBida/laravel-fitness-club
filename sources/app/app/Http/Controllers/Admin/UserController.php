@@ -83,6 +83,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->userService->destroy($user);
+
+        return redirect()->route('admin.users.index');
     }
 }
