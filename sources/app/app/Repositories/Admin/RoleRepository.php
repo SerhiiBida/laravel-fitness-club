@@ -17,6 +17,16 @@ class RoleRepository implements RoleRepositoryInterface
             })->exists();
     }
 
+    public function getPermissions(int $roleId): array
+    {
+        return Role::where('id', $roleId)
+            ->with('permissions')
+            ->first()
+            ->permissions
+            ->pluck('name')
+            ->toArray();
+    }
+
     public function all(): Collection
     {
         return Role::all();

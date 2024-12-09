@@ -18,7 +18,7 @@ class PermissionMiddleware
     }
 
     /**
-     * Проверка, если разрешение у пользователя
+     * Проверка, есть ли разрешение у пользователя
      *
      * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
@@ -26,9 +26,15 @@ class PermissionMiddleware
     {
         $user = Auth::user();
 
+        // Проверка права доступа
         if (!$user || !$this->roleRepository->hasPermission($user->role_id, $permission)) {
             abort(403);
         }
+
+        // Разрешения пользователя во все blade
+        $permissions = $this->roleRepository->getPermissions($user->role_id);
+
+        view()->share('permissions', $permissions);
 
         return $next($request);
     }
