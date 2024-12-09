@@ -2,12 +2,15 @@
 
 @php
     $columns = [
-        'ID', 'Username', 'Email', 'Password', 'Bonuses', 'Avatar', 'IsStaff', 'Role', 'Created', 'Updated'
+        'ID', 'Username', 'Email', 'Password', 'Bonuses', 'Avatar', 'IsStaff', 'Role', 'Created At', 'Updated At'
     ];
 @endphp
 
 @section('content')
     <section class="container-lg">
+        <a href="{{ route('admin.users.create') }}" class="btn btn-primary mt-2">
+            Create
+        </a>
         <div class="table-responsive ">
             <table class="table table-hover">
                 <thead>
@@ -49,7 +52,7 @@
                             />
                         </td>
                         <td>
-                            {{ $user->is_staff }}
+                            {{ $user->is_staff ? 'Yes' : 'No' }}
                         </td>
                         @foreach ($roles as $role)
                             @if ($role->id === $user->role_id)
