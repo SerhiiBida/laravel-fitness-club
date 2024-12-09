@@ -37,6 +37,7 @@ class PermissionMiddleware
             abort(403);
         }
 
+        // Добавляем во все blades
         view()->share('permissions', $permissions);
 
         return $next($request);

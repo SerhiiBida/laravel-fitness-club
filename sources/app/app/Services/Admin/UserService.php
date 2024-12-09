@@ -36,6 +36,11 @@ class UserService
     // Создание записи
     public function store(StoreUserRequest $request, array $data)
     {
+        // Убираем пустые значения
+        $data = array_filter($data, function ($value) {
+            return $value !== '' && $value !== null;
+        });
+
         $password = Hash::make($data['password']);
 
         unset($data['password']);

@@ -11,7 +11,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'password.regex' => 'Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character.',
+            'password.regex' => 'Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character(@$!%*?&).',
         ];
     }
 }

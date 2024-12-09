@@ -19,7 +19,7 @@ class StaffMiddleware
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->is_staff) {
+            if ($user && $user->is_staff) {
                 return $next($request);
 
             } else {
