@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\User\StoreUserRequest;
+use App\Http\Requests\Admin\User\UpdateUserRequest;
+use App\Models\User;
 use App\Services\Admin\UserService;
 
 class UserController extends Controller
@@ -22,7 +25,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        list($users, $roles) = $this->userService->index();
+
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     /**
@@ -36,7 +41,7 @@ class UserController extends Controller
     /**
      * Создание user
      */
-    public function store(StorePermissionRequest $request)
+    public function store(StoreUserRequest $request)
     {
         //
     }
@@ -44,15 +49,17 @@ class UserController extends Controller
     /**
      * Отобразить user
      */
-    public function show(Permission $permission)
+    public function show(User $user)
     {
-        //
+        list($user, $roles) = $this->userService->show($user);
+
+        return view('admin.users.show', compact('user', 'roles'));
     }
 
     /**
      * Форма редактирования
      */
-    public function edit(Permission $permission)
+    public function edit(User $user)
     {
         //
     }
@@ -60,7 +67,7 @@ class UserController extends Controller
     /**
      * Обновление данных user
      */
-    public function update(UpdatePermissionRequest $request, Permission $permission)
+    public function update(UpdateUserRequest $request, User $user)
     {
         //
     }
@@ -68,7 +75,7 @@ class UserController extends Controller
     /**
      * Удаление user
      */
-    public function destroy(Permission $permission)
+    public function destroy(User $user)
     {
         //
     }

@@ -9,6 +9,7 @@ use App\Repositories\Admin\UserRepository;
 use App\Services\Admin\Auth\AuthStaffService;
 use App\Services\Admin\RoleService;
 use App\Services\Admin\UserService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,17 +19,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Auth
+        // Repositories
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+
+        // Services
         $this->app->bind(AuthStaffService::class, function ($app) {
             return new AuthStaffService($app->make(UserRepositoryInterface::class));
         });
-        // User
         $this->app->bind(UserService::class, function ($app) {
-            return new UserService($app->make(UserRepositoryInterface::class));
+            return new UserService(
+                $app->make(UserRepositoryInterface::class),
+                $app->make(RoleRepositoryInterface::class)
+            );
         });
-        // Role
-        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(RoleService::class, function ($app) {
             return new RoleService($app->make(RoleRepositoryInterface::class));
         });
@@ -39,6 +43,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrap();
     }
 }

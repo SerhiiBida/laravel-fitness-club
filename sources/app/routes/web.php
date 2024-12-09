@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Auth\AuthStaffController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,14 @@ Route::group([
 
 // Admin Dashboard(Нужно проверка на доступ к Админке!! Нужно ПО свое!!)
 Route::middleware(['staff'])->get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+
+// CRUD таблиц
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => ['staff'],
+], function () {
+    Route::resources([
+        'users' => UserController::class,
+    ]);
+});

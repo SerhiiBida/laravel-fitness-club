@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!--Styles-->
-    @vite(['resources/sass/app.scss'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <title>
         Fitness Club Admin Panel
@@ -25,8 +25,5 @@
 
     @includeIf('admin.layouts.footer')
 </div>
-
-<!--Scripts-->
-@vite(['resources/js/app.js'])
 </body>
 </html>

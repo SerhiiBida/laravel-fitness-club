@@ -1,7 +1,7 @@
 @extends('admin.layouts.base')
 
 @section('content')
-    <div class="container h-100 d-flex flex-column justify-content-center">
+    <section class="container min-vh-100 d-flex flex-column justify-content-center">
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card">
@@ -81,5 +81,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 @endsection
