@@ -139,10 +139,20 @@
                     </div>
                 </div>
 
-                <div class="mt-4 d-flex justify-content-start">
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
+                <div class="mt-4 d-flex justify-content-start gap-2">
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                         Back
                     </a>
+                    @if (in_array('delete users', $permissions))
+                        <a href="{{ route('admin.users.destroy', $user->id) }}" class="btn btn-danger">
+                            Delete
+                        </a>
+                    @endif
+                    @if (in_array('edit users', $permissions))
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">
+                            Update
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

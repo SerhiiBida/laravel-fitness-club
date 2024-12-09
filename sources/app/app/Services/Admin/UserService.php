@@ -2,9 +2,11 @@
 
 namespace App\Services\Admin;
 
+use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -28,13 +30,26 @@ class UserService
     // Форма создания
     public function create()
     {
-        //
+        return $this->roleRepository->all();
     }
 
     // Создание записи
-    public function store()
+    public function store(StoreUserRequest $request, array $data)
     {
-        //
+        $password = Hash::make($data['password']);
+
+        unset($data['password']);
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('users', 'public');
+        }
+
+        $user = User::create([
+            ...$data,
+            'password' => $password,
+        ]);
+
+        return $user->id;
     }
 
     // Отобразить одну запись

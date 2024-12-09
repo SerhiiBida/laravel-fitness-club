@@ -35,7 +35,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = $this->userService->create();
+
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -43,7 +45,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $userId = $this->userService->store($request, $data);
+
+        return redirect()->route('admin.users.show', $userId);
     }
 
     /**

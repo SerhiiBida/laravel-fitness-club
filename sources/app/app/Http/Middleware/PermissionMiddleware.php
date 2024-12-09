@@ -26,13 +26,16 @@ class PermissionMiddleware
     {
         $user = Auth::user();
 
-        // Проверка права доступа
-        if (!$user || !$this->roleRepository->hasPermission($user->role_id, $permission)) {
+        if (!$user) {
             abort(403);
         }
 
-        // Разрешения пользователя во все blade
+        // Все разрешения пользователя
         $permissions = $this->roleRepository->getPermissions($user->role_id);
+
+        if (!in_array($permission, $permissions)) {
+            abort(403);
+        }
 
         view()->share('permissions', $permissions);
 
