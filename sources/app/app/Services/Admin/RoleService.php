@@ -2,12 +2,16 @@
 
 namespace App\Services\Admin;
 
+use App\Interfaces\Admin\PermissionRepositoryInterface;
 use App\Interfaces\Admin\RoleRepositoryInterface;
+use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class RoleService
 {
     public function __construct(
-        protected RoleRepositoryInterface $roleRepository
+        protected RoleRepositoryInterface       $roleRepository,
+        protected PermissionRepositoryInterface $permissionRepository
     )
     {
 
@@ -20,17 +24,39 @@ class RoleService
 
     public function create()
     {
-        $rolePermissions = $this->roleRepository->getPermissions();
+        return $this->permissionRepository->all();
     }
 
-    public function store()
+    public function store($data): array
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $selectedPermissions = (array)$data['permissions'];
+
+            unset($data['permissions']);
+
+            $role = Role::create($data);
+
+            // Связь Role и Permissions
+            $role->permissions()->sync($selectedPermissions);
+
+            DB::commit();
+
+            return ['status' => 'success', 'role' => $role];
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            \Log::error('Error creating role: ' . $e->getMessage());
+
+            return ['status' => 'error', 'message' => 'Please try again later.'];
+        }
     }
 
-    public function show(string $id)
+    public function show(Role $role)
     {
-        //
+        return $this->roleRepository->find($role->id);
     }
 
     public function edit(string $id)

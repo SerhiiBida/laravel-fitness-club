@@ -13,6 +13,10 @@ class Role extends Model
 
     public $timestamps = true;
 
+    protected $fillable = [
+        'name',
+    ];
+
     // Отношение с другими таблицами
     public function users(): HasMany
     {

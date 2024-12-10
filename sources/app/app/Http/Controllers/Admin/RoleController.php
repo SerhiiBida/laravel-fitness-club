@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Role\StoreRoleRequest;
+use App\Models\Role;
 use App\Services\Admin\RoleService;
 use Illuminate\Http\Request;
 
@@ -33,25 +35,35 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $rolePermissions = $this->roleService->create();
+        $allPermissions = $this->roleService->create();
 
-        return view('admin.roles.create', compact('rolePermissions'));
+        return view('admin.roles.create', compact('allPermissions'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $result = $this->roleService->store($data);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.roles.show', $result['role']->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Role $role)
     {
-        //
+        $role = $this->roleService->show($role);
+
+        return view('admin.roles.show', compact('role'));
     }
 
     /**

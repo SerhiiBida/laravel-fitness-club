@@ -6,6 +6,7 @@ use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class RoleRepository implements RoleRepositoryInterface
 {
@@ -38,7 +39,7 @@ class RoleRepository implements RoleRepositoryInterface
         return Role::query()->paginate($perPage);
     }
 
-    public function find(int $roleId): array
+    public function find(int $roleId): Model
     {
         return Role::with('permissions')->findOrFail($roleId);
     }

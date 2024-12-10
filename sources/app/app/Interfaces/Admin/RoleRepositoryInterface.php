@@ -4,6 +4,7 @@ namespace App\Interfaces\Admin;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 interface RoleRepositoryInterface
 {
@@ -15,5 +16,5 @@ interface RoleRepositoryInterface
 
     public function paginate(int $perPage): LengthAwarePaginator;
 
-    public function find(int $roleId): array;
+    public function find(int $roleId): Model;
 }
