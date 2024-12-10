@@ -8,9 +8,12 @@
 
 @section('content')
     <section class="container-lg">
-        <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mt-2">
-            Create
-        </a>
+        @if (in_array('create roles', $permissions))
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mt-2">
+                Create
+            </a>
+        @endif
+
         <div class="table-responsive ">
             <table class="table table-hover">
                 <thead>
