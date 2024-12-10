@@ -67,7 +67,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        list($user, $roles) = $this->userService->edit($user);
+
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -75,7 +77,11 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $data = $request->validated();
+
+        $this->userService->update($request, $user, $data);
+
+        return redirect()->route('admin.users.show', $user->id);
     }
 
     /**
@@ -83,7 +89,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->userService->destroy($user);
+        $result = $this->userService->destroy($user);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
 
         return redirect()->route('admin.users.index');
     }

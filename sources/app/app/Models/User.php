@@ -69,9 +69,24 @@ class User extends Authenticatable
         return $this->hasMany(Training::class);
     }
 
+    public function trainingRegistrations(): HasMany
+    {
+        return $this->hasMany(TrainingRegistration::class);
+    }
+
     // Отношение многие ко многим
     public function schedules(): BelongsToMany
     {
         return $this->belongsToMany(Schedule::class);
+    }
+
+    // Удаление связанных данных при удалении user
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->membershipPurchases()->delete();
+            $user->trainingRegistrations()->delete();
+            $user->schedules()->detach();
+        });
     }
 }

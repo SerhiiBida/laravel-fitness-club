@@ -2,6 +2,13 @@
 
 @section('content')
     <section class="container-lg py-2">
+        {{--Уведомления--}}
+        @error('errorMessage')
+        <div class="alert alert-danger" role="alert">
+            {{ $message }}
+        </div>
+        @enderror
+
         <div class="card">
             <div class="card-header">
                 <h3>

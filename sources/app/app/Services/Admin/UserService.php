@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Http\Requests\Admin\User\StoreUserRequest;
+use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
@@ -42,18 +43,13 @@ class UserService
             return $value !== '' && $value !== null;
         });
 
-        $password = Hash::make($data['password']);
-
-        unset($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
         if ($request->hasFile('image')) {
             $data['image_path'] = $request->file('image')->store('users', 'public');
         }
 
-        $user = User::create([
-            ...$data,
-            'password' => $password,
-        ]);
+        $user = User::create($data);
 
         return $user->id;
     }
@@ -67,20 +63,45 @@ class UserService
     }
 
     // Форма редактирования
-    public function edit()
+    public function edit(User $user)
     {
-        //
+        $roles = $this->roleRepository->all();
+
+        return [$user, $roles];
     }
 
     // Обновление данных записи
-    public function update()
+    public function update(UpdateUserRequest $request, User $user, array $data)
     {
-        //
+        // Убираем пустые значения
+        $data = array_filter($data, function ($value) {
+            return $value !== '' && $value !== null;
+        });
+
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        // Обновление фото
+        if ($request->hasFile('image')) {
+            if (basename($user->image_path) !== 'default.png') {
+                Storage::disk('public')->delete($user->image_path);
+            }
+
+            $data['image_path'] = $request->file('image')->store('users', 'public');
+        }
+
+        $user->update($data);
     }
 
     // Удаление
-    public function destroy(User $user)
+    public function destroy(User $user): array
     {
+        // Используется в trainings
+        if ($user->trainings()->exists()) {
+            return ['status' => 'error', 'message' => 'This user has trainings.'];
+        }
+
         $imageName = basename($user->image_path);
 
         // Удаляем изображение
@@ -89,5 +110,7 @@ class UserService
         }
 
         $user->delete();
+
+        return ['status' => 'success'];
     }
 }
