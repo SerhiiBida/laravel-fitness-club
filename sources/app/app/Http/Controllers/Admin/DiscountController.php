@@ -23,7 +23,9 @@ class DiscountController extends Controller
      */
     public function index()
     {
-        //
+        $discounts = $this->discountService->index();
+
+        return view('admin.discounts.index', compact('discounts'));
     }
 
     /**

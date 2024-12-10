@@ -2,19 +2,19 @@
 
 @php
     $columns = [
-        'ID', 'Name', 'Created At', 'Updated At'
+        'ID', 'Name', 'Percent, %', 'Created At', 'Updated At'
     ];
 @endphp
 
 @section('content')
     <section class="container-lg py-2">
-        @if (in_array('create roles', $permissions))
-            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mt-2">
+        @if (in_array('create discounts', $permissions))
+            <a href="{{ route('admin.discounts.create') }}" class="btn btn-primary mt-2">
                 Create
             </a>
         @endif
 
-        <div class="table-responsive ">
+        <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -26,21 +26,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($roles as $role)
+                @foreach ($discounts as $discount)
                     <tr>
                         <th scope="row">
-                            {{ $role->id }}
+                            {{ $discount->id }}
                         </th>
                         <td>
-                            <a href="{{ route('admin.roles.show', $role->id) }}">
-                                {{ $role->name }}
+                            <a href="{{ route('admin.discounts.show', $discount->id) }}">
+                                {{ $discount->name }}
                             </a>
                         </td>
                         <td>
-                            {{ $role->created_at }}
+                            {{ $discount->percent }}
                         </td>
                         <td>
-                            {{ $role->updated_at }}
+                            {{ $discount->created_at->format('Y-m-d H:i:s') }}
+                        </td>
+                        <td>
+                            {{ $discount->updated_at->format('Y-m-d H:i:s') }}
                         </td>
                     </tr>
                 @endforeach
@@ -49,7 +52,7 @@
         </div>
 
         <div class="mt-2 d-flex justify-content-center">
-            {{ $roles->links() }}
+            {{ $discounts->links() }}
         </div>
     </section>
 @endsection

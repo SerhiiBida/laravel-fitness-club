@@ -7,7 +7,7 @@
 @endphp
 
 @section('content')
-    <section class="container-lg">
+    <section class="container-lg py-2">
         @if (in_array('create users', $permissions))
             <a href="{{ route('admin.users.create') }}" class="btn btn-primary mt-2">
                 Create
