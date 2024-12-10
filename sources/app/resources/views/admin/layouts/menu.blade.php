@@ -47,6 +47,13 @@
                     Membership
                 </a>
                 <ul class="dropdown-menu">
+                    @if (in_array('view memberships', $permissions))
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.memberships.index') }}">
+                                Memberships
+                            </a>
+                        </li>
+                    @endif
                     @if (in_array('view discounts', $permissions))
                         <li>
                             <a class="dropdown-item" href="{{ route('admin.discounts.index') }}">

@@ -3,15 +3,18 @@
 namespace App\Providers;
 
 use App\Interfaces\Admin\DiscountRepositoryInterface;
+use App\Interfaces\Admin\MembershipRepositoryInterface;
 use App\Interfaces\Admin\PermissionRepositoryInterface;
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Repositories\Admin\DiscountRepository;
+use App\Repositories\Admin\MembershipRepository;
 use App\Repositories\Admin\PermissionRepository;
 use App\Repositories\Admin\RoleRepository;
 use App\Repositories\Admin\UserRepository;
 use App\Services\Admin\Auth\AuthStaffService;
 use App\Services\Admin\DiscountService;
+use App\Services\Admin\MembershipService;
 use App\Services\Admin\PermissionService;
 use App\Services\Admin\RoleService;
 use App\Services\Admin\UserService;
@@ -31,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->bind(DiscountRepositoryInterface::class, DiscountRepository::class);
+        $this->app->bind(MembershipRepositoryInterface::class, MembershipRepository::class);
 
         // Services
         $this->app->bind(AuthStaffService::class, function ($app) {
@@ -57,6 +61,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(DiscountService::class, function ($app) {
             return new DiscountService($app->make(DiscountRepositoryInterface::class));
+        });
+
+        $this->app->bind(MembershipService::class, function ($app) {
+            return new MembershipService($app->make(MembershipRepositoryInterface::class));
         });
     }
 

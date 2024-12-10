@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\AuthStaffController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\MembershipController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
@@ -43,5 +44,6 @@ Route::group([
         'users' => UserController::class,
         'roles' => RoleController::class,
         'discounts' => DiscountController::class,
+        'memberships' => MembershipController::class,
     ]);
 });
