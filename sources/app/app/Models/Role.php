@@ -28,4 +28,12 @@ class Role extends Model
     {
         return $this->BelongsToMany(Permission::class);
     }
+
+    // Удаление связанных данных при удалении role
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->permissions()->detach();
+        });
+    }
 }

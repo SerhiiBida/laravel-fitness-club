@@ -12,12 +12,14 @@
         <div class="card">
             <div class="card-header">
                 <h3>
-                    Create New Role
+                    Edit Role
                 </h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.roles.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.roles.update', $role->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
+
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="name" class="form-label">
@@ -32,7 +34,7 @@
                                 id="name"
                                 name="name"
                                 class="form-control"
-                                value="{{ old('name') }}"
+                                value="{{ old('name', $role->name) }}"
                                 required
                             >
                             @error('name')
@@ -53,10 +55,10 @@
                         </div>
                         <div class="col-md-9">
                             <select id="permissions" name="permissions[]" class="form-select" multiple>
-                                @foreach($allPermissions as $permission)
+                                @foreach ($allPermissions as $permission)
                                     <option
                                         value="{{ $permission->id }}"
-                                        @if(in_array($permission->id, old('permissions', [])))
+                                        @if(in_array($permission->id, old('permissions', $role->permissions->pluck('id')->toArray())))
                                             selected
                                         @endif
                                     >
@@ -74,9 +76,9 @@
 
                     <div class="mt-4 d-flex justify-content-start">
                         <button type="submit" class="btn btn-primary">
-                            Create
+                            Update
                         </button>
-                        <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary ms-2">
+                        <a href="{{ route('admin.roles.show', $role->id) }}" class="btn btn-secondary ms-2">
                             Back
                         </a>
                     </div>
@@ -85,3 +87,4 @@
         </div>
     </section>
 @endsection
+

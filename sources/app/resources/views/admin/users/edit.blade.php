@@ -164,7 +164,9 @@
                             <select id="role_id" name="role_id" class="form-select" required>
                                 @foreach ($roles as $role)
                                     <option
-                                        value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                        value="{{ $role->id }}"
+                                        {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}
+                                    >
                                         {{ $role->name }}
                                     </option>
                                 @endforeach
