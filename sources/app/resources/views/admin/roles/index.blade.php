@@ -7,14 +7,16 @@
 @endphp
 
 @section('content')
-    <section class="container-lg py-2">
-        @if (in_array('create roles', $permissions))
-            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mt-2">
-                Create
-            </a>
-        @endif
+    <section class="container-lg py-2 d-flex flex-column min-vh-100">
+        <div class="options">
+            @if (in_array('create roles', $permissions))
+                <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mt-2">
+                    Create
+                </a>
+            @endif
+        </div>
 
-        <div class="table-responsive ">
+        <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -48,7 +50,7 @@
             </table>
         </div>
 
-        <div class="mt-2 d-flex justify-content-center">
+        <div class="mt-2 d-flex justify-content-center mt-auto overflow-x-auto">
             {{ $roles->links() }}
         </div>
     </section>

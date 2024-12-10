@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Discount\StoreDiscountRequest;
+use App\Http\Requests\Admin\Discount\UpdateDiscountRequest;
+use App\Models\Discount;
 use App\Services\Admin\DiscountService;
-use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
@@ -33,46 +35,60 @@ class DiscountController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.discounts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDiscountRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $discount = $this->discountService->store($data);
+
+        return redirect()->route('admin.discounts.show', $discount->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Discount $discount)
     {
-        //
+        return view('admin.discounts.show', compact('discount'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Discount $discount)
     {
-        //
+        return view('admin.discounts.edit', compact('discount'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateDiscountRequest $request, Discount $discount)
     {
-        //
+        $data = $request->validated();
+
+        $this->discountService->update($discount, $data);
+
+        return redirect()->route('admin.discounts.show', $discount->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Discount $discount)
     {
-        //
+        $result = $this->discountService->destroy($discount);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.discounts.index');
     }
 }

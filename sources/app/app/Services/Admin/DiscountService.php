@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Models\Discount;
 use App\Repositories\Admin\DiscountRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -24,28 +25,34 @@ class DiscountService
         //
     }
 
-    public function store()
+    public function store(array $data): Discount
+    {
+        return Discount::create($data);
+    }
+
+    public function show(Discount $discount)
     {
         //
     }
 
-    public function show(string $id)
+    public function edit(Discount $discount)
     {
-        //
+
     }
 
-    public function edit(string $id)
+    public function update(Discount $discount, array $data)
     {
-        //
+        $discount->update($data);
     }
 
-    public function update(string $id)
+    public function destroy(Discount $discount): array
     {
-        //
-    }
+        if ($discount->memberships()->exists()) {
+            return ['status' => 'error', 'message' => 'This discount is already used.'];
+        }
 
-    public function destroy(string $id)
-    {
-        //
+        $discount->delete();
+
+        return ['status' => 'success'];
     }
 }

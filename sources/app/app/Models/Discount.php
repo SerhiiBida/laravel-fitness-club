@@ -12,6 +12,11 @@ class Discount extends Model
 
     public $timestamps = true;
 
+    protected $fillable = [
+        'name',
+        'percent'
+    ];
+
     // Отношения
     public function memberships(): HasMany
     {
