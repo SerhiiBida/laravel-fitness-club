@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Repositories\Admin\RoleRepository;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StaffMiddleware
 {
+    public function __construct(
+        protected RoleRepository $roleRepository
+    )
+    {
+
+    }
+
     /**
      * Проверка доступа к контенту "персонала" сайта
      *
@@ -20,6 +28,12 @@ class StaffMiddleware
             $user = Auth::user();
 
             if ($user && $user->is_staff) {
+                // Все разрешения пользователя
+                $permissions = $this->roleRepository->getPermissions($user->role_id);
+
+                // Добавляем во все blades
+                view()->share('permissions', $permissions);
+
                 return $next($request);
 
             } else {
