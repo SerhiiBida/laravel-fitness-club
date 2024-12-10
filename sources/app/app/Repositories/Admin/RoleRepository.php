@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Models\Role;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class RoleRepository implements RoleRepositoryInterface
@@ -17,7 +18,7 @@ class RoleRepository implements RoleRepositoryInterface
             })->exists();
     }
 
-    public function getPermissions(int $roleId): array
+    public function getPermissionNames(int $roleId): array
     {
         return Role::where('id', $roleId)
             ->with('permissions')
@@ -30,6 +31,16 @@ class RoleRepository implements RoleRepositoryInterface
     public function all(): Collection
     {
         return Role::all();
+    }
+
+    public function paginate(int $perPage): LengthAwarePaginator
+    {
+        return Role::query()->paginate($perPage);
+    }
+
+    public function find(int $roleId): array
+    {
+        return Role::with('permissions')->findOrFail($roleId);
     }
 }
 

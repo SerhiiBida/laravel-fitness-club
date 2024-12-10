@@ -29,7 +29,7 @@ class StaffMiddleware
 
             if ($user && $user->is_staff) {
                 // Все разрешения пользователя
-                $permissions = $this->roleRepository->getPermissions($user->role_id);
+                $permissions = $this->roleRepository->getPermissionNames($user->role_id);
 
                 // Добавляем во все blades
                 view()->share('permissions', $permissions);

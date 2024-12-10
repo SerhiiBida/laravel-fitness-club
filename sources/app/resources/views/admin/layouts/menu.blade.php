@@ -20,7 +20,7 @@
                 @endif
                 @if (in_array('view roles', $permissions))
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{ route('admin.roles.index') }}">
                             Roles
                         </a>
                     </li>
