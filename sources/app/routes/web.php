@@ -6,6 +6,10 @@ use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\MembershipController;
 use App\Http\Controllers\Admin\MembershipPurchaseController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\TrainingController;
+use App\Http\Controllers\Admin\TrainingRegistrationController;
+use App\Http\Controllers\Admin\TrainingTypeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -47,5 +51,9 @@ Route::group([
         'discounts' => DiscountController::class,
         'memberships' => MembershipController::class,
         'membership_purchases' => MembershipPurchaseController::class,
+        'training_types' => TrainingTypeController::class,
+        'trainings' => TrainingController::class,
+        'training_registrations' => TrainingRegistrationController::class,
+        'schedules' => ScheduleController::class,
     ]);
 });
