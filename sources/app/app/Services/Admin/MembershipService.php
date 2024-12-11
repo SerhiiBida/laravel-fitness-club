@@ -102,7 +102,12 @@ class MembershipService
 
         // Требуется в тренировках
         if ($membership->trainings()->exists()) {
-            return ['status' => 'error', 'message' => 'This membership was purchased by a user.'];
+            return ['status' => 'error', 'message' => 'The membership is used in training'];
+        }
+
+        // Удаляем изображение
+        if (basename($membership->image_path) !== 'default.png') {
+            Storage::disk('public')->delete($membership->image_path);
         }
 
         $membership->delete();

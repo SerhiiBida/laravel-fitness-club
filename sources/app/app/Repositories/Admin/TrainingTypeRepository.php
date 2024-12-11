@@ -12,7 +12,7 @@ class TrainingTypeRepository implements TrainingTypeRepositoryInterface
 
     public function all(): Collection
     {
-        // TODO: Implement all() method.
+        return TrainingType::all();
     }
 
     public function paginate(int $perPage): LengthAwarePaginator

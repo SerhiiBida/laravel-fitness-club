@@ -15,6 +15,16 @@ class Training extends Model
     // Автоматическое обновления create_at и update_at
     public $timestamps = true;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'image_path',
+        'training_type_id',
+        'user_id',
+        'is_published',
+        'is_private',
+    ];
+
     // Внешние ключи
     public function trainingType(): BelongsTo
     {
@@ -43,11 +53,21 @@ class Training extends Model
         return $this->belongsToMany(Membership::class);
     }
 
+    // Удаление связанных данных при удалении training
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->schedules()->delete();
+            $user->trainingRegistrations()->delete();
+            $user->memberships()->detach();
+        });
+    }
+
 
     // МЕТОДЫ:
 
     // IDs абонементов, что требует тренировка
-    public static function getIdsRequiredMemberships(int $trainingId): Array
+    public static function getIdsRequiredMemberships(int $trainingId): array
     {
         return self::with('memberships')
             ->where('id', $trainingId)

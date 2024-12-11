@@ -25,7 +25,9 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        //
+        $trainings = $this->trainingService->index();
+
+        return view('admin.trainings.index', compact('trainings'));
     }
 
     /**
@@ -33,7 +35,9 @@ class TrainingController extends Controller
      */
     public function create()
     {
-        //
+        list($trainingTypes, $users, $memberships) = $this->trainingService->create();
+
+        return view('admin.trainings.create', compact('trainingTypes', 'users', 'memberships'));
     }
 
     /**
@@ -41,7 +45,15 @@ class TrainingController extends Controller
      */
     public function store(StoreTrainingRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $result = $this->trainingService->store($request, $data);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.trainings.show', $result['training']->id);
     }
 
     /**
@@ -49,7 +61,9 @@ class TrainingController extends Controller
      */
     public function show(Training $training)
     {
-        //
+        list($training, $registeredUsers) = $this->trainingService->show($training);
+
+        return view('admin.trainings.show', compact('training', 'registeredUsers'));
     }
 
     /**
@@ -57,7 +71,9 @@ class TrainingController extends Controller
      */
     public function edit(Training $training)
     {
-        //
+        list($training, $trainingTypes, $users, $memberships) = $this->trainingService->edit($training);
+
+        return view('admin.trainings.edit', compact('training', 'trainingTypes', 'users', 'memberships'));
     }
 
     /**
@@ -65,7 +81,15 @@ class TrainingController extends Controller
      */
     public function update(UpdateTrainingRequest $request, Training $training)
     {
-        //
+        $data = $request->validated();
+
+        $result = $this->trainingService->update($request, $training, $data);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.trainings.show', $result['training']->id);
     }
 
     /**
@@ -73,6 +97,8 @@ class TrainingController extends Controller
      */
     public function destroy(Training $training)
     {
-        //
+        $this->trainingService->destroy($training);
+
+        return redirect()->route('admin.trainings.index');
     }
 }

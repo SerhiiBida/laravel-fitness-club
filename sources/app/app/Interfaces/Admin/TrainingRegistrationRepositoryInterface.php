@@ -10,4 +10,6 @@ interface TrainingRegistrationRepositoryInterface
     public function all(): Collection;
 
     public function paginate(int $perPage): LengthAwarePaginator;
+
+    public function registeredUsers(int $trainingId): Collection;
 }

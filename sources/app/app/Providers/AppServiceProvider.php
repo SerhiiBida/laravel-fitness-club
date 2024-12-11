@@ -103,7 +103,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(TrainingService::class, function ($app) {
-            return new TrainingService($app->make(TrainingRepositoryInterface::class));
+            return new TrainingService(
+                $app->make(TrainingRepositoryInterface::class),
+                $app->make(TrainingTypeRepositoryInterface::class),
+                $app->make(UserRepositoryInterface::class),
+                $app->make(MembershipRepositoryInterface::class),
+                $app->make(TrainingRegistrationRepositoryInterface::class),
+            );
         });
 
         $this->app->bind(TrainingRegistrationService::class, function ($app) {
