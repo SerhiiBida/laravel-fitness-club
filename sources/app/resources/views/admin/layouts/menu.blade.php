@@ -54,6 +54,13 @@
                             </a>
                         </li>
                     @endif
+                    @if (in_array('view membership_purchases', $permissions))
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.membership_purchases.index') }}">
+                                Membership Purchases
+                            </a>
+                        </li>
+                    @endif
                     @if (in_array('view discounts', $permissions))
                         <li>
                             <a class="dropdown-item" href="{{ route('admin.discounts.index') }}">
