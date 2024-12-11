@@ -170,12 +170,12 @@
                         </strong>
                     </div>
                     <div class="col-md-9">
-                        @if (!$registeredUsers->isEmpty())
+                        @if (!$trainingRegistrations->isEmpty())
                             <div class="list-group overflow-auto" style="max-height: 300px;">
-                                @foreach($registeredUsers as $user)
-                                    <a href="{{ route('admin.users.show', $user->id) }}"
+                                @foreach($trainingRegistrations as $record)
+                                    <a href="{{ route('admin.training_registrations.show', $record->id) }}"
                                        class="list-group-item list-group-item-action">
-                                        {{ $user->username }}
+                                        {{ $record->user->username }} ({{ $record->user->email }})
                                     </a>
                                 @endforeach
                             </div>

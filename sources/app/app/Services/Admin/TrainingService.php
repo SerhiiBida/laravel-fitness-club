@@ -93,9 +93,9 @@ class TrainingService
     {
         $training->load(['user', 'trainingType', 'memberships']);
 
-        $registeredUsers = $this->trainingRegistrationRepository->registeredUsers($training->id);
+        $trainingRegistrations = $this->trainingRegistrationRepository->allByTraining($training->id);
 
-        return [$training, $registeredUsers];
+        return [$training, $trainingRegistrations];
     }
 
     /**

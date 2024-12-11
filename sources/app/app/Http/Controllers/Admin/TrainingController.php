@@ -61,9 +61,9 @@ class TrainingController extends Controller
      */
     public function show(Training $training)
     {
-        list($training, $registeredUsers) = $this->trainingService->show($training);
+        list($training, $trainingRegistrations) = $this->trainingService->show($training);
 
-        return view('admin.trainings.show', compact('training', 'registeredUsers'));
+        return view('admin.trainings.show', compact('training', 'trainingRegistrations'));
     }
 
     /**
