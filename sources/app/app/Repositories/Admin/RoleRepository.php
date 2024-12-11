@@ -36,7 +36,7 @@ class RoleRepository implements RoleRepositoryInterface
 
     public function paginate(int $perPage): LengthAwarePaginator
     {
-        return Role::query()->paginate($perPage);
+        return Role::paginate($perPage);
     }
 
     public function find(int $roleId): Model

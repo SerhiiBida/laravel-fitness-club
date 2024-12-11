@@ -27,7 +27,7 @@ class MembershipPurchaseController extends Controller
     {
         $membershipPurchases = $this->membershipPurchaseService->index();
 
-        return redirect()->route('admin.membership_purchases.index', compact('membershipPurchases'));
+        return view('admin.membership_purchases.index', compact('membershipPurchases'));
     }
 
     /**
@@ -35,7 +35,9 @@ class MembershipPurchaseController extends Controller
      */
     public function create()
     {
-        //
+        list($memberships, $users) = $this->membershipPurchaseService->create();
+
+        return view('admin.membership_purchases.create', compact('memberships', 'users'));
     }
 
     /**
@@ -43,7 +45,11 @@ class MembershipPurchaseController extends Controller
      */
     public function store(StoreMembershipPurchaseRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $membershipPurchase = $this->membershipPurchaseService->store($data);
+
+        return redirect()->route('admin.membership_purchases.show', $membershipPurchase->id);
     }
 
     /**
@@ -51,7 +57,9 @@ class MembershipPurchaseController extends Controller
      */
     public function show(MembershipPurchase $membershipPurchase)
     {
-        //
+        $membershipPurchase = $this->membershipPurchaseService->show($membershipPurchase);
+
+        return view('admin.membership_purchases.show', compact('membershipPurchase'));
     }
 
     /**

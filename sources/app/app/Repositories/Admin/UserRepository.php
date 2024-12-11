@@ -22,6 +22,6 @@ class UserRepository implements UserRepositoryInterface
 
     public function paginate(int $perPage)
     {
-        return User::query()->paginate($perPage);
+        return User::paginate($perPage);
     }
 }

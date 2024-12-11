@@ -17,6 +17,6 @@ class DiscountRepository implements DiscountRepositoryInterface
 
     public function paginate(int $perPage): LengthAwarePaginator
     {
-        return Discount::query()->paginate($perPage);
+        return Discount::paginate($perPage);
     }
 }

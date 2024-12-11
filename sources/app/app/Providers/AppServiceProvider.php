@@ -75,7 +75,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(MembershipPurchaseService::class, function ($app) {
-            return new MembershipPurchaseService($app->make(MembershipPurchaseRepositoryInterface::class));
+            return new MembershipPurchaseService(
+                $app->make(MembershipPurchaseRepositoryInterface::class),
+                $app->make(MembershipRepositoryInterface::class),
+                $app->make(UserRepositoryInterface::class),
+            );
         });
     }
 
