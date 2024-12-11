@@ -1,5 +1,6 @@
 @php
     $userDropdown = ['view users', 'view roles'];
+    $trainingDropdown = ['view trainings', 'schedules view', 'view training_registrations', 'view training_types'];
     $membershipDropdown = ['view memberships', 'view membership_purchases', 'view discounts'];
 @endphp
 
@@ -37,7 +38,23 @@
         @endif
 
         {{--Training--}}
-
+        @if (array_intersect($trainingDropdown, $permissions))
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    Training
+                </a>
+                <ul class="dropdown-menu">
+                    @if (in_array('view trainings', $permissions))
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                Trainings
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </li>
+        @endif
 
         {{--Membership--}}
         @if (array_intersect($membershipDropdown, $permissions))
