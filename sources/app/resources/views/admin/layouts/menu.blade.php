@@ -45,10 +45,10 @@
                     Training
                 </a>
                 <ul class="dropdown-menu">
-                    @if (in_array('view trainings', $permissions))
+                    @if (in_array('view training_types', $permissions))
                         <li>
-                            <a class="dropdown-item" href="#">
-                                Trainings
+                            <a class="dropdown-item" href="{{ route('admin.training_types.index') }}">
+                                Training Types
                             </a>
                         </li>
                     @endif

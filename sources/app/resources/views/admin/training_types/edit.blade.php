@@ -5,11 +5,11 @@
         <div class="card">
             <div class="card-header">
                 <h3>
-                    Edit Discount
+                    Edit Training Type
                 </h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.discounts.update', $discount->id) }}" method="POST"
+                <form action="{{ route('admin.training_types.update', $trainingType->id) }}" method="POST"
                       enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -28,37 +28,10 @@
                                 id="name"
                                 name="name"
                                 class="form-control"
-                                value="{{ old('name', $discount->name) }}"
+                                value="{{ old('name', $trainingType->name) }}"
                                 required
                             >
                             @error('name')
-                            <div class="text-danger">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="percent" class="form-label">
-                                <strong>
-                                    Percent, %:
-                                </strong>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <input
-                                type="number"
-                                id="percent"
-                                name="percent"
-                                class="form-control"
-                                value="{{ old('percent', $discount->percent) }}"
-                                step="0.01"
-                                placeholder='0,00'
-                                required
-                            >
-                            @error('percent')
                             <div class="text-danger">
                                 {{ $message }}
                             </div>
@@ -70,7 +43,10 @@
                         <button type="submit" class="btn btn-primary">
                             Update
                         </button>
-                        <a href="{{ route('admin.discounts.show', $discount->id) }}" class="btn btn-secondary ms-2">
+                        <a
+                            href="{{ route('admin.training_types.show', $trainingType->id) }}"
+                            class="btn btn-secondary ms-2"
+                        >
                             Back
                         </a>
                     </div>

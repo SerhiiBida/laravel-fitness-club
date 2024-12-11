@@ -25,7 +25,9 @@ class TrainingTypeController extends Controller
      */
     public function index()
     {
-        //
+        $trainingTypes = $this->trainingTypeService->index();
+
+        return view('admin.training_types.index', compact('trainingTypes'));
     }
 
     /**
@@ -33,7 +35,7 @@ class TrainingTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.training_types.create');
     }
 
     /**
@@ -41,7 +43,11 @@ class TrainingTypeController extends Controller
      */
     public function store(StoreTrainingTypeRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $trainingType = $this->trainingTypeService->store($data);
+
+        return redirect()->route('admin.training_types.show', $trainingType->id);
     }
 
     /**
@@ -49,7 +55,7 @@ class TrainingTypeController extends Controller
      */
     public function show(TrainingType $trainingType)
     {
-        //
+        return view('admin.training_types.show', compact('trainingType'));
     }
 
     /**
@@ -57,7 +63,7 @@ class TrainingTypeController extends Controller
      */
     public function edit(TrainingType $trainingType)
     {
-        //
+        return view('admin.training_types.edit', compact('trainingType'));
     }
 
     /**
@@ -65,7 +71,11 @@ class TrainingTypeController extends Controller
      */
     public function update(UpdateTrainingTypeRequest $request, TrainingType $trainingType)
     {
-        //
+        $data = $request->validated();
+
+        $this->trainingTypeService->update($trainingType, $data);
+
+        return redirect()->route('admin.training_types.show', $trainingType->id);
     }
 
     /**
@@ -73,6 +83,12 @@ class TrainingTypeController extends Controller
      */
     public function destroy(TrainingType $trainingType)
     {
-        //
+        $result = $this->trainingTypeService->destroy($trainingType);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.training_types.index');
     }
 }

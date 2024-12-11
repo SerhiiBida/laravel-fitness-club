@@ -3,6 +3,7 @@
 namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\TrainingRepositoryInterface;
+use App\Models\Training;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -16,6 +17,6 @@ class TrainingRepository implements TrainingRepositoryInterface
 
     public function paginate(int $perPage): LengthAwarePaginator
     {
-        // TODO: Implement paginate() method.
+        return Training::paginate($perPage);
     }
 }

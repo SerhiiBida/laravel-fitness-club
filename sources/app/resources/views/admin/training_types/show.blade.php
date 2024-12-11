@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-header">
                 <h3>
-                    Role: {{ $role->name }}
+                    Training Type: {{ $trainingType->name }}
                 </h3>
             </div>
             <div class="card-body">
@@ -16,7 +16,7 @@
                         </strong>
                     </div>
                     <div class="col-md-9">
-                        {{ $role->id }}
+                        {{ $trainingType->id }}
                     </div>
                 </div>
 
@@ -27,22 +27,7 @@
                         </strong>
                     </div>
                     <div class="col-md-9">
-                        {{ $role->name }}
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <strong>
-                            Permissions:
-                        </strong>
-                    </div>
-                    <div class="col-md-9">
-                        <select class="form-select" multiple disabled>
-                            @foreach ($role->permissions as $permission)
-                                <option value="{{ $permission->id }}">{{ $permission->name }}</option>
-                            @endforeach
-                        </select>
+                        {{ $trainingType->name }}
                     </div>
                 </div>
 
@@ -53,7 +38,7 @@
                         </strong>
                     </div>
                     <div class="col-md-9">
-                        {{ $role->created_at }}
+                        {{ $trainingType->created_at }}
                     </div>
                 </div>
 
@@ -64,16 +49,16 @@
                         </strong>
                     </div>
                     <div class="col-md-9">
-                        {{ $role->updated_at }}
+                        {{ $trainingType->updated_at }}
                     </div>
                 </div>
 
                 <div class="mt-4 d-flex justify-content-start gap-2">
-                    <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.training_types.index') }}" class="btn btn-secondary">
                         Back
                     </a>
-                    @if (in_array('delete roles', $permissions))
-                        <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST">
+                    @if (in_array('delete training_types', $permissions))
+                        <form action="{{ route('admin.training_types.destroy', $trainingType->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">
@@ -81,8 +66,8 @@
                             </button>
                         </form>
                     @endif
-                    @if (in_array('edit roles', $permissions))
-                        <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-primary">
+                    @if (in_array('edit training_types', $permissions))
+                        <a href="{{ route('admin.training_types.edit', $trainingType->id) }}" class="btn btn-primary">
                             Update
                         </a>
                     @endif

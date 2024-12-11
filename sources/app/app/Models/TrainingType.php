@@ -13,6 +13,10 @@ class TrainingType extends Model
     // Автоматическое обновления create_at и update_at
     public $timestamps = true;
 
+    protected $fillable = [
+        'name',
+    ];
+
     // Отношения
     public function trainings(): HasMany
     {

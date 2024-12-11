@@ -20,6 +20,15 @@
     @includeIf('admin.layouts.header')
 
     <main class="main">
+        <div class="container-lg pt-1">
+            {{-- Уведомления --}}
+            @error('errorMessage')
+            <div class="alert alert-danger mb-1" role="alert">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+
         @yield('content')
     </main>
 
