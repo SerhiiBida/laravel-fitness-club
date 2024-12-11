@@ -25,7 +25,7 @@ class UpdateUserRequest extends FormRequest
         $userId = $this->route('user')->id;
 
         return [
-            'username' => 'required|string|between:6,18|unique:users,username,' . $userId,
+            'username' => 'required|string|between:6,30|unique:users,username,' . $userId,
             'email' => 'required|email|max:255|unique:users,email,' . $userId,
             'password' => [
                 'nullable',
