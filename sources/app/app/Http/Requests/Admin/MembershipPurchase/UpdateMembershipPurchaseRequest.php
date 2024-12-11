@@ -22,7 +22,10 @@ class UpdateMembershipPurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'membership_id' => 'required|exists:memberships,id',
+            'user_id' => 'required|exists:users,id',
+            'status' => 'required|in:paid,pending,cancelled',
+            'expired_at' => 'nullable|date|after_or_equal:today'
         ];
     }
 }

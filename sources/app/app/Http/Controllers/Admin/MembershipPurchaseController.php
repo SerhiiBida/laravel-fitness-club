@@ -67,7 +67,9 @@ class MembershipPurchaseController extends Controller
      */
     public function edit(MembershipPurchase $membershipPurchase)
     {
-        //
+        list($memberships, $users) = $this->membershipPurchaseService->edit();
+
+        return view('admin.membership_purchases.edit', compact('membershipPurchase', 'memberships', 'users'));
     }
 
     /**
@@ -75,7 +77,11 @@ class MembershipPurchaseController extends Controller
      */
     public function update(UpdateMembershipPurchaseRequest $request, MembershipPurchase $membershipPurchase)
     {
-        //
+        $data = $request->validated();
+
+        $this->membershipPurchaseService->update($membershipPurchase, $data);
+
+        return redirect()->route('admin.membership_purchases.show', $membershipPurchase->id);
     }
 
     /**
@@ -83,7 +89,9 @@ class MembershipPurchaseController extends Controller
      */
     public function destroy(MembershipPurchase $membershipPurchase)
     {
-        //
+        $this->membershipPurchaseService->destroy($membershipPurchase);
+
+        return redirect()->route('admin.membership_purchases.index');
     }
 }
 

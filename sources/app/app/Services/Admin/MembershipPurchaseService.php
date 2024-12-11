@@ -2,7 +2,6 @@
 
 namespace App\Services\Admin;
 
-use App\Http\Requests\Admin\MembershipPurchase\UpdateMembershipPurchaseRequest;
 use App\Interfaces\Admin\MembershipPurchaseRepositoryInterface;
 use App\Interfaces\Admin\MembershipRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
@@ -65,24 +64,28 @@ class MembershipPurchaseService
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MembershipPurchase $membershipPurchase)
+    public function edit(): array
     {
-        //
+        $memberships = $this->membershipRepository->all();
+
+        $users = $this->userRepository->all();
+
+        return [$memberships, $users];
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMembershipPurchaseRequest $request, MembershipPurchase $membershipPurchase)
+    public function update(MembershipPurchase $membershipPurchase, array $data): void
     {
-        //
+        $membershipPurchase->update($data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MembershipPurchase $membershipPurchase)
+    public function destroy(MembershipPurchase $membershipPurchase): void
     {
-        //
+        $membershipPurchase->delete();
     }
 }
