@@ -15,6 +15,17 @@ class Membership extends Model
     // Автоматическое обновления create_at и update_at
     public $timestamps = true;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'image_path',
+        'validity_days',
+        'bonuses',
+        'is_published',
+        'discount_id',
+    ];
+
     // Внешние ключи
     public function discount(): belongsTo
     {

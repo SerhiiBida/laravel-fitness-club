@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use app\Http\Requests\Admin\Membership\StoreMembershipRequest;
-use app\Http\Requests\Admin\Membership\UpdateMembershipRequest;
+use App\Http\Requests\Admin\Membership\StoreMembershipRequest;
+use App\Http\Requests\Admin\Membership\UpdateMembershipRequest;
 use App\Models\Membership;
 use App\Services\Admin\MembershipService;
 
@@ -35,7 +35,9 @@ class MembershipController extends Controller
      */
     public function create()
     {
-        //
+        $discounts = $this->membershipService->create();
+
+        return view('admin.memberships.create', compact('discounts'));
     }
 
     /**
@@ -43,7 +45,11 @@ class MembershipController extends Controller
      */
     public function store(StoreMembershipRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $membership = $this->membershipService->store($request, $data);
+
+        return redirect()->route('admin.memberships.show', $membership->id);
     }
 
     /**
@@ -51,7 +57,9 @@ class MembershipController extends Controller
      */
     public function show(Membership $membership)
     {
-        //
+        $membership = $this->membershipService->show($membership);
+
+        return view('admin.memberships.show', compact('membership'));
     }
 
     /**
@@ -59,7 +67,9 @@ class MembershipController extends Controller
      */
     public function edit(Membership $membership)
     {
-        //
+        list($membership, $discounts) = $this->membershipService->edit($membership);
+
+        return view('admin.memberships.edit', compact('membership', 'discounts'));
     }
 
     /**
@@ -67,7 +77,11 @@ class MembershipController extends Controller
      */
     public function update(UpdateMembershipRequest $request, Membership $membership)
     {
-        //
+        $data = $request->validated();
+
+        $this->membershipService->update($request, $membership, $data);
+
+        return redirect()->route('admin.memberships.show', $membership->id);
     }
 
     /**
@@ -75,6 +89,12 @@ class MembershipController extends Controller
      */
     public function destroy(Membership $membership)
     {
-        //
+        $result = $this->membershipService->destroy($membership);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.memberships.index');
     }
 }

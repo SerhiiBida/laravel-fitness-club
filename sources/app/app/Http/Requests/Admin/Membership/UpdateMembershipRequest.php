@@ -11,7 +11,7 @@ class UpdateMembershipRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class UpdateMembershipRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:65535',
+            'price' => 'required|decimal:0,2|min:0|max:9999999',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'validity_days' => 'required|integer|min:1|max:9999',
+            'bonuses' => 'required|integer|min:0|max:9999999',
+            'is_published' => 'required|boolean',
+            'discount_id' => 'nullable|exists:discounts,id',
         ];
     }
 }

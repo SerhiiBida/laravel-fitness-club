@@ -64,7 +64,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(MembershipService::class, function ($app) {
-            return new MembershipService($app->make(MembershipRepositoryInterface::class));
+            return new MembershipService(
+                $app->make(MembershipRepositoryInterface::class),
+                $app->make(DiscountRepositoryInterface::class),
+            );
         });
     }
 

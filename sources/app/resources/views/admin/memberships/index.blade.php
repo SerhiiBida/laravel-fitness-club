@@ -61,7 +61,7 @@
                             {{ $membership->is_published ? 'Yes' : 'No' }}
                         </td>
                         <td>
-                            {{ $membership->discount->percent }}
+                            {{ $membership->discount->percent ?? '-' }}
                         </td>
                         <td>
                             {{ $membership->created_at }}
