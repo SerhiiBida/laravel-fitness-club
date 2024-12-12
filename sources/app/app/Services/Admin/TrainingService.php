@@ -10,9 +10,9 @@ use App\Repositories\Admin\TrainingRegistrationRepository;
 use App\Repositories\Admin\TrainingRepository;
 use App\Repositories\Admin\TrainingTypeRepository;
 use App\Repositories\Admin\UserRepository;
+use App\Services\FileService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class TrainingService
 {
@@ -21,7 +21,8 @@ class TrainingService
         protected TrainingTypeRepository         $trainingTypeRepository,
         protected UserRepository                 $userRepository,
         protected MembershipRepository           $membershipRepository,
-        protected TrainingRegistrationRepository $trainingRegistrationRepository
+        protected TrainingRegistrationRepository $trainingRegistrationRepository,
+        protected FileService                    $fileService
     )
     {
 
@@ -63,7 +64,7 @@ class TrainingService
 
             // Есть фото
             if ($request->hasFile('image')) {
-                $data['image_path'] = $request->file('image')->store('trainings', 'public');
+                $data['image_path'] = $this->fileService->save($request->file('image'), 'trainings');
             }
 
             $training = Training::create($data);
@@ -142,10 +143,10 @@ class TrainingService
             // Есть фото
             if ($request->hasFile('image')) {
                 if (basename($training->image_path) !== 'default.png') {
-                    Storage::disk('public')->delete($training->image_path);
+                    $this->fileService->delete($training->image_path);
                 }
 
-                $data['image_path'] = $request->file('image')->store('trainings', 'public');
+                $data['image_path'] = $this->fileService->save($request->file('image'), 'trainings');
             }
 
             $training->update($data);
@@ -177,7 +178,7 @@ class TrainingService
     {
         // Удаляем изображение
         if (basename($training->image_path) !== 'default.png') {
-            Storage::disk('public')->delete($training->image_path);
+            $this->fileService->delete($training->image_path);
         }
 
         $training->delete();

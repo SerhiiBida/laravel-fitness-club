@@ -33,6 +33,7 @@ use App\Services\Admin\TrainingRegistrationService;
 use App\Services\Admin\TrainingService;
 use App\Services\Admin\TrainingTypeService;
 use App\Services\Admin\UserService;
+use App\Services\FileService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -64,7 +65,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserService::class, function ($app) {
             return new UserService(
                 $app->make(UserRepositoryInterface::class),
-                $app->make(RoleRepositoryInterface::class)
+                $app->make(RoleRepositoryInterface::class),
+                $app->make(FileService::class),
             );
         });
 
@@ -87,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
             return new MembershipService(
                 $app->make(MembershipRepositoryInterface::class),
                 $app->make(DiscountRepositoryInterface::class),
+                $app->make(FileService::class),
             );
         });
 
@@ -109,6 +112,7 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(UserRepositoryInterface::class),
                 $app->make(MembershipRepositoryInterface::class),
                 $app->make(TrainingRegistrationRepositoryInterface::class),
+                $app->make(FileService::class),
             );
         });
 
@@ -126,6 +130,10 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(TrainingRepositoryInterface::class),
                 $app->make(UserRepositoryInterface::class),
             );
+        });
+
+        $this->app->bind(FileService::class, function ($app) {
+            return new FileService();
         });
     }
 

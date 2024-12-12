@@ -7,14 +7,15 @@ use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
     public function __construct(
         protected UserRepositoryInterface $userRepository,
         protected RoleRepositoryInterface $roleRepository,
+        protected FileService             $fileService
     )
     {
 
@@ -46,7 +47,7 @@ class UserService
         $data['password'] = Hash::make($data['password']);
 
         if ($request->hasFile('image')) {
-            $data['image_path'] = $request->file('image')->store('users', 'public');
+            $data['image_path'] = $this->fileService->save($request->file('image'), 'users');
         }
 
         $user = User::create($data);
@@ -85,10 +86,10 @@ class UserService
         // Обновление фото
         if ($request->hasFile('image')) {
             if (basename($user->image_path) !== 'default.png') {
-                Storage::disk('public')->delete($user->image_path);
+                $this->fileService->delete($user->image_path);
             }
 
-            $data['image_path'] = $request->file('image')->store('users', 'public');
+            $data['image_path'] = $this->fileService->save($request->file('image'), 'users');
         }
 
         $user->update($data);
@@ -102,11 +103,9 @@ class UserService
             return ['status' => 'error', 'message' => 'This user has trainings.'];
         }
 
-        $imageName = basename($user->image_path);
-
         // Удаляем изображение
-        if ($imageName !== 'default.png') {
-            Storage::disk('public')->delete($user->image_path);
+        if (basename($user->image_path) !== 'default.png') {
+            $this->fileService->delete($user->image_path);
         }
 
         $user->delete();

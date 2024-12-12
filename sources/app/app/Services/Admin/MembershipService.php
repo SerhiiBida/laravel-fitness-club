@@ -7,14 +7,15 @@ use App\Http\Requests\Admin\Membership\UpdateMembershipRequest;
 use App\Interfaces\Admin\DiscountRepositoryInterface;
 use App\Interfaces\Admin\MembershipRepositoryInterface;
 use App\Models\Membership;
+use App\Services\FileService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Storage;
 
 class MembershipService
 {
     public function __construct(
         protected MembershipRepositoryInterface $membershipRepository,
-        protected DiscountRepositoryInterface   $discountRepository
+        protected DiscountRepositoryInterface   $discountRepository,
+        protected FileService                   $fileService
     )
     {
 
@@ -46,7 +47,7 @@ class MembershipService
         });
 
         if ($request->hasFile('image')) {
-            $data['image_path'] = $request->file('image')->store('memberships', 'public');
+            $data['image_path'] = $this->fileService->save($request->file('image'), 'memberships');
         }
 
         return Membership::create($data);
@@ -81,10 +82,10 @@ class MembershipService
     {
         if ($request->hasFile('image')) {
             if (basename($membership->image_path) !== 'default.png') {
-                Storage::disk('public')->delete($membership->image_path);
+                $this->fileService->delete($membership->image_path);
             }
 
-            $data['image_path'] = $request->file('image')->store('memberships', 'public');
+            $data['image_path'] = $this->fileService->save($request->file('image'), 'memberships');
         }
 
         $membership->update($data);
@@ -107,7 +108,7 @@ class MembershipService
 
         // Удаляем изображение
         if (basename($membership->image_path) !== 'default.png') {
-            Storage::disk('public')->delete($membership->image_path);
+            $this->fileService->delete($membership->image_path);
         }
 
         $membership->delete();
