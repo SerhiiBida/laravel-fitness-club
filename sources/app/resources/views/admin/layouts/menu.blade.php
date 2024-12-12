@@ -1,6 +1,6 @@
 @php
     $userDropdown = ['view users', 'view roles'];
-    $trainingDropdown = ['view trainings', 'schedules view', 'view training_registrations', 'view training_types'];
+    $trainingDropdown = ['view trainings', 'view schedules', 'view training_registrations', 'view training_types'];
     $membershipDropdown = ['view memberships', 'view membership_purchases', 'view discounts'];
 @endphp
 
@@ -63,6 +63,13 @@
                         <li>
                             <a class="dropdown-item" href="{{ route('admin.training_registrations.index') }}">
                                 Training Registrations
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('view schedules', $permissions))
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.schedules.index') }}">
+                                Schedules
                             </a>
                         </li>
                     @endif

@@ -121,7 +121,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ScheduleService::class, function ($app) {
-            return new ScheduleService($app->make(ScheduleRepositoryInterface::class));
+            return new ScheduleService(
+                $app->make(ScheduleRepositoryInterface::class),
+                $app->make(TrainingRepositoryInterface::class),
+                $app->make(UserRepositoryInterface::class),
+            );
         });
     }
 

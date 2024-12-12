@@ -22,7 +22,11 @@ class UpdateScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'training_id' => 'required|exists:trainings,id',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
+            'users' => 'nullable|array',
+            'users.*' => 'nullable|exists:users,id',
         ];
     }
 }

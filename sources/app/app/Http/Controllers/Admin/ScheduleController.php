@@ -25,7 +25,9 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $schedules = $this->scheduleService->index();
+
+        return view('admin.schedules.index', compact('schedules'));
     }
 
     /**
@@ -33,7 +35,9 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        //
+        $trainings = $this->scheduleService->create();
+
+        return view('admin.schedules.create', compact('trainings'));
     }
 
     /**
@@ -41,7 +45,11 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $schedule = $this->scheduleService->store($data);
+
+        return redirect()->route('admin.schedules.show', $schedule->id);
     }
 
     /**
@@ -49,7 +57,9 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        $schedule = $this->scheduleService->show($schedule);
+
+        return view('admin.schedules.show', compact('schedule'));
     }
 
     /**
@@ -57,7 +67,9 @@ class ScheduleController extends Controller
      */
     public function edit(Schedule $schedule)
     {
-        //
+        list($schedule, $trainings, $users) = $this->scheduleService->edit($schedule);
+
+        return view('admin.schedules.edit', compact('schedule', 'trainings', 'users'));
     }
 
     /**
@@ -65,7 +77,15 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
-        //
+        $data = $request->validated();
+
+        $result = $this->scheduleService->update($schedule, $data);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.schedules.show', $schedule->id);
     }
 
     /**
@@ -73,6 +93,12 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        $result = $this->scheduleService->destroy($schedule);
+
+        if ($result['status'] === 'error') {
+            return back()->withErrors(['errorMessage' => $result['message']]);
+        }
+
+        return redirect()->route('admin.schedules.index');
     }
 }

@@ -22,7 +22,9 @@ class StoreScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'training_id' => 'required|exists:trainings,id',
+            'start_time' => 'required|date|after:now',
+            'end_time' => 'required|date|after:start_time',
         ];
     }
 }

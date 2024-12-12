@@ -14,6 +14,12 @@ class Schedule extends Model
     // Автоматическое обновления create_at и update_at
     public $timestamps = true;
 
+    protected $fillable = [
+        'training_id',
+        'start_time',
+        'end_time'
+    ];
+
     // Внешние ключи
     public function training(): BelongsTo
     {
