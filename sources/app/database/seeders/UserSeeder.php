@@ -30,5 +30,14 @@ class UserSeeder extends Seeder
                 'role_id' => 1,
                 'is_staff' => 1,
             ])->create();
+
+        // Создание тренера
+        User::factory()
+            ->state([
+                'email' => env('TRAINER_EMAIL'),
+                'password' => Hash::make(env('TRAINER_PASSWORD')),
+                'role_id' => 3,
+                'is_staff' => 1,
+            ])->create();
     }
 }
