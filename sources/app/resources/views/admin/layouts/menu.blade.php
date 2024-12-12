@@ -59,6 +59,13 @@
                             </a>
                         </li>
                     @endif
+                    @if (in_array('view training_registrations', $permissions))
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.training_registrations.index') }}">
+                                Training Registrations
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
         @endif

@@ -25,7 +25,9 @@ class TrainingRegistrationController extends Controller
      */
     public function index()
     {
-        //
+        $trainingRegistrations = $this->trainingRegistrationService->index();
+
+        return view('admin.training_registrations.index', compact('trainingRegistrations'));
     }
 
     /**
@@ -33,7 +35,9 @@ class TrainingRegistrationController extends Controller
      */
     public function create()
     {
-        //
+        list($users, $trainings) = $this->trainingRegistrationService->create();
+
+        return view('admin.training_registrations.create', compact('users', 'trainings'));
     }
 
     /**
@@ -41,7 +45,11 @@ class TrainingRegistrationController extends Controller
      */
     public function store(StoreTrainingRegistrationRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $trainingRegistration = $this->trainingRegistrationService->store($data);
+
+        return redirect()->route('admin.training_registrations.show', $trainingRegistration->id);
     }
 
     /**
@@ -49,7 +57,9 @@ class TrainingRegistrationController extends Controller
      */
     public function show(TrainingRegistration $trainingRegistration)
     {
-        //
+        $trainingRegistration = $this->trainingRegistrationService->show($trainingRegistration);
+
+        return view('admin.training_registrations.show', compact('trainingRegistration'));
     }
 
     /**
@@ -57,7 +67,9 @@ class TrainingRegistrationController extends Controller
      */
     public function edit(TrainingRegistration $trainingRegistration)
     {
-        //
+        list($trainingRegistration, $users, $trainings) = $this->trainingRegistrationService->edit($trainingRegistration);
+
+        return view('admin.training_registrations.edit', compact('trainingRegistration', 'users', 'trainings'));
     }
 
     /**
@@ -65,7 +77,11 @@ class TrainingRegistrationController extends Controller
      */
     public function update(UpdateTrainingRegistrationRequest $request, TrainingRegistration $trainingRegistration)
     {
-        //
+        $data = $request->validated();
+
+        $this->trainingRegistrationService->update($trainingRegistration, $data);
+
+        return redirect()->route('admin.training_registrations.show', $trainingRegistration->id);
     }
 
     /**
@@ -73,6 +89,8 @@ class TrainingRegistrationController extends Controller
      */
     public function destroy(TrainingRegistration $trainingRegistration)
     {
-        //
+        $this->trainingRegistrationService->destroy($trainingRegistration);
+
+        return redirect()->route('admin.training_registrations.index');
     }
 }

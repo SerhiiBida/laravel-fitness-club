@@ -22,7 +22,9 @@ class UpdateTrainingRegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => 'required|exists:users,id',
+            'training_id' => 'required|exists:trainings,id',
+            'status' => 'required|in:active,inactive'
         ];
     }
 }
