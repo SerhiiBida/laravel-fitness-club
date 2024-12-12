@@ -27,7 +27,9 @@
                                 </option>
                                 @foreach ($trainings as $training)
                                     <option
-                                        value="{{ $training->id }}" {{ old('training_id') == $training->id ? 'selected' : '' }}>
+                                        value="{{ $training->id }}"
+                                        {{ old('training_id') == $training->id || (!old('training_id') && $selectedTrainingId == $training->id) ? 'selected' : '' }}
+                                    >
                                         {{ $training->name }}
                                     </option>
                                 @endforeach

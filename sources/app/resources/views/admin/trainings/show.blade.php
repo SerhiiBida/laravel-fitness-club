@@ -1,5 +1,9 @@
 @extends('admin.layouts.base')
 
+@php
+    $currentTime = \Carbon\Carbon::now();
+@endphp
+
 @section('content')
     <section class="container-lg py-2">
         <div class="card">
@@ -172,9 +176,11 @@
                     <div class="col-md-9">
                         @if (!$trainingRegistrations->isEmpty())
                             <div class="list-group overflow-auto" style="max-height: 300px;">
-                                @foreach($trainingRegistrations as $record)
-                                    <a href="{{ route('admin.training_registrations.show', $record->id) }}"
-                                       class="list-group-item list-group-item-action">
+                                @foreach ($trainingRegistrations as $record)
+                                    <a
+                                        href="{{ route('admin.training_registrations.show', $record->id) }}"
+                                        class="list-group-item list-group-item-action"
+                                    >
                                         {{ $record->user->username }} ({{ $record->user->email }})
                                     </a>
                                 @endforeach
@@ -182,6 +188,38 @@
                         @else
                             -
                         @endif
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <strong>
+                            Training schedule:
+                        </strong>
+                    </div>
+                    <div class="col-md-9">
+                        @if (!$training->schedules->isEmpty())
+                            <div class="list-group overflow-auto" style="max-height: 300px;">
+                                @foreach ($training->schedules as $schedule)
+                                    @if (\Carbon\Carbon::parse($schedule->start_time)->isAfter($currentTime))
+                                        <a
+                                            href="{{ route('admin.schedules.show', $schedule->id) }}"
+                                            class="list-group-item list-group-item-action"
+                                        >
+                                            {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i d-m-Y') }}
+                                        </a>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+                        <a
+                            href="{{ route('admin.schedules.create', ['trainingId' => $training->id]) }}"
+                            class="mt-2 d-block"
+                        >
+                            <button class="btn btn-primary">
+                                Add
+                            </button>
+                        </a>
                     </div>
                 </div>
 

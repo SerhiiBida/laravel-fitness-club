@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Schedule\CreateScheduleRequest;
 use App\Http\Requests\Admin\Schedule\StoreScheduleRequest;
 use App\Http\Requests\Admin\Schedule\UpdateScheduleRequest;
 use App\Models\Schedule;
@@ -33,11 +34,13 @@ class ScheduleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CreateScheduleRequest $request)
     {
-        $trainings = $this->scheduleService->create();
+        $data = $request->validated();
 
-        return view('admin.schedules.create', compact('trainings'));
+        list($trainings, $selectedTrainingId) = $this->scheduleService->create($data);
+
+        return view('admin.schedules.create', compact('trainings', 'selectedTrainingId'));
     }
 
     /**

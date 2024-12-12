@@ -7,7 +7,6 @@ use App\Repositories\Admin\ScheduleRepository;
 use App\Repositories\Admin\TrainingRepository;
 use App\Repositories\Admin\UserRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleService
@@ -32,9 +31,13 @@ class ScheduleService
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Collection
+    public function create(array $data): array
     {
-        return $this->trainingRepository->all();
+        $trainings = $this->trainingRepository->all();
+
+        $selectedTrainingId = $data['trainingId'] ?? 0;
+
+        return [$trainings, $selectedTrainingId];
     }
 
     /**

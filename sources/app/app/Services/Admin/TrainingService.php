@@ -91,7 +91,20 @@ class TrainingService
      */
     public function show(Training $training): array
     {
-        $training->load(['user', 'trainingType', 'memberships']);
+        $training->load([
+            'user' => function ($query) {
+                $query->orderBy('username');
+            },
+            'trainingType' => function ($query) {
+                $query->orderBy('name');
+            },
+            'memberships' => function ($query) {
+                $query->orderBy('name');
+            },
+            'schedules' => function ($query) {
+                $query->orderBy('start_time');
+            }
+        ]);
 
         $trainingRegistrations = $this->trainingRegistrationRepository->allByTraining($training->id);
 
