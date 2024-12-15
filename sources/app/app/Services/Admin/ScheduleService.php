@@ -2,19 +2,24 @@
 
 namespace App\Services\Admin;
 
+use App\Mail\ScheduleChangeMail;
 use App\Models\Schedule;
 use App\Repositories\Admin\ScheduleRepository;
+use App\Repositories\Admin\TrainingRegistrationRepository;
 use App\Repositories\Admin\TrainingRepository;
 use App\Repositories\Admin\UserRepository;
+use App\Services\MailService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleService
 {
     public function __construct(
-        protected ScheduleRepository $scheduleRepository,
-        protected TrainingRepository $trainingRepository,
-        protected UserRepository     $userRepository
+        protected ScheduleRepository             $scheduleRepository,
+        protected TrainingRepository             $trainingRepository,
+        protected UserRepository                 $userRepository,
+        protected TrainingRegistrationRepository $trainingRegistrationRepository,
+        protected MailService                    $mailService
     )
     {
 
@@ -45,7 +50,11 @@ class ScheduleService
      */
     public function store(array $data): Schedule
     {
-        return Schedule::create($data);
+        $schedule = Schedule::create($data);
+
+        $this->messageAboutChange($schedule);
+
+        return $schedule;
     }
 
     /**
@@ -102,6 +111,8 @@ class ScheduleService
 
             DB::commit();
 
+            $this->messageAboutChange($schedule);
+
             return ['status' => 'success'];
 
         } catch (\Exception $e) {
@@ -124,6 +135,31 @@ class ScheduleService
 
         $schedule->delete();
 
+        $this->messageAboutChange($schedule);
+
         return ['status' => 'success'];
+    }
+
+    // Отправка сообщения про изменения расписания
+    public function messageAboutChange(Schedule $schedule): void
+    {
+        // Зарегистрированные на тренировку
+        $trainingRegistrations = $this->trainingRegistrationRepository->allByTraining($schedule->training_id);
+
+        if ($trainingRegistrations->isEmpty()) {
+            return;
+        }
+
+        // Отправка сообщений
+        foreach ($trainingRegistrations as $trainingRegistration) {
+            $userEmail = $trainingRegistration->user->email;
+
+            $mailData = [
+                'username' => $trainingRegistration->user->username ?? $userEmail,
+                'training' => $trainingRegistration->training->name,
+            ];
+
+            $this->mailService->send($userEmail, ScheduleChangeMail::class, $mailData);
+        }
     }
 }

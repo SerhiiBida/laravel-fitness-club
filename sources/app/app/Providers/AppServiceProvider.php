@@ -34,6 +34,7 @@ use App\Services\Admin\TrainingService;
 use App\Services\Admin\TrainingTypeService;
 use App\Services\Admin\UserService;
 use App\Services\FileService;
+use App\Services\MailService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -124,16 +125,22 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->bind(FileService::class, function ($app) {
+            return new FileService();
+        });
+
+        $this->app->singleton(MailService::class, function ($app) {
+            return new MailService();
+        });
+
         $this->app->bind(ScheduleService::class, function ($app) {
             return new ScheduleService(
                 $app->make(ScheduleRepositoryInterface::class),
                 $app->make(TrainingRepositoryInterface::class),
                 $app->make(UserRepositoryInterface::class),
+                $app->make(TrainingRegistrationRepositoryInterface::class),
+                $app->make(MailService::class)
             );
-        });
-
-        $this->app->bind(FileService::class, function ($app) {
-            return new FileService();
         });
     }
 
