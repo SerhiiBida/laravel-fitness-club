@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TrainingType\StoreTrainingTypeRequest;
 use App\Http\Requests\Admin\TrainingType\UpdateTrainingTypeRequest;
 use App\Models\TrainingType;
-use App\Services\Admin\TrainingTypeService;
+use App\Services\Admin\CRUD\TrainingTypeService;
 
 class TrainingTypeController extends Controller
 {

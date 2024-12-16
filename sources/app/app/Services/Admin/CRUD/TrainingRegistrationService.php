@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Admin\CRUD;
 
 use App\Models\TrainingRegistration;
 use App\Repositories\Admin\TrainingRegistrationRepository;

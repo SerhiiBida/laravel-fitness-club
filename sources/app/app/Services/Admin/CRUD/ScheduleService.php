@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Admin\CRUD;
 
 use App\Mail\ScheduleChangeMail;
 use App\Models\Schedule;

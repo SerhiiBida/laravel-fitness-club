@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MembershipPurchase\StoreMembershipPurchaseRequest;
 use App\Http\Requests\Admin\MembershipPurchase\UpdateMembershipPurchaseRequest;
 use App\Models\MembershipPurchase;
-use App\Services\Admin\MembershipPurchaseService;
+use App\Services\Admin\CRUD\MembershipPurchaseService;
 
 class MembershipPurchaseController extends Controller
 {

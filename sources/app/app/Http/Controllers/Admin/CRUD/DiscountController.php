@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Discount\StoreDiscountRequest;
 use App\Http\Requests\Admin\Discount\UpdateDiscountRequest;
 use App\Models\Discount;
-use App\Services\Admin\DiscountService;
+use App\Services\Admin\CRUD\DiscountService;
 
 class DiscountController extends Controller
 {

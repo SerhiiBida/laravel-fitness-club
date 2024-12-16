@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Admin\CRUD;
 
 use App\Http\Requests\Admin\Membership\StoreMembershipRequest;
 use App\Http\Requests\Admin\Membership\UpdateMembershipRequest;

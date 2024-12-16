@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Schedule\CreateScheduleRequest;
 use App\Http\Requests\Admin\Schedule\StoreScheduleRequest;
 use App\Http\Requests\Admin\Schedule\UpdateScheduleRequest;
 use App\Models\Schedule;
-use App\Services\Admin\ScheduleService;
+use App\Services\Admin\CRUD\ScheduleService;
 
 class ScheduleController extends Controller
 {

@@ -1,16 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AuthStaffController;
+use App\Http\Controllers\Admin\CRUD\DiscountController;
+use App\Http\Controllers\Admin\CRUD\MembershipController;
+use App\Http\Controllers\Admin\CRUD\MembershipPurchaseController;
+use App\Http\Controllers\Admin\CRUD\RoleController;
+use App\Http\Controllers\Admin\CRUD\ScheduleController;
+use App\Http\Controllers\Admin\CRUD\TrainingController;
+use App\Http\Controllers\Admin\CRUD\TrainingRegistrationController;
+use App\Http\Controllers\Admin\CRUD\TrainingTypeController;
+use App\Http\Controllers\Admin\CRUD\UserController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\DiscountController;
-use App\Http\Controllers\Admin\MembershipController;
-use App\Http\Controllers\Admin\MembershipPurchaseController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ScheduleController;
-use App\Http\Controllers\Admin\TrainingController;
-use App\Http\Controllers\Admin\TrainingRegistrationController;
-use App\Http\Controllers\Admin\TrainingTypeController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
