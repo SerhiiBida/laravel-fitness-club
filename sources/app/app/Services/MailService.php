@@ -10,7 +10,7 @@ class MailService
     public function send(string $to, string $mailableClass, array $mailData = []): bool
     {
         try {
-            Mail::to($to)->send(new $mailableClass($mailData));
+            Mail::to($to)->queue(new $mailableClass($mailData));
 
             return true;
 
