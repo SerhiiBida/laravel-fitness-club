@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 permission.env.php
 app/Env/PermissionsEnv.php
+/.idea/

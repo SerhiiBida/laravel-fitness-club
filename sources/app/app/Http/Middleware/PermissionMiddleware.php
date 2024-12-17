@@ -22,11 +22,27 @@ class PermissionMiddleware
      *
      * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next, string $permission): Response
+    public function handle(Request $request, Closure $next, string $requiredPermissions): Response
     {
         $user = Auth::user();
 
-        if (!$user || !$this->roleRepository->hasPermission($user->role_id, $permission)) {
+        if (!$user) {
+            abort(403);
+        }
+
+        $requiredPermissions = explode('|', $requiredPermissions);
+
+        $check = false;
+
+        foreach ($requiredPermissions as $permission) {
+            if ($this->roleRepository->hasPermission($user->role_id, $permission)) {
+                $check = true;
+
+                break;
+            }
+        }
+
+        if (!$check) {
             abort(403);
         }
 

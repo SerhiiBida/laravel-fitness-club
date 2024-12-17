@@ -12,10 +12,12 @@ use App\Interfaces\Admin\TrainingRegistrationRepositoryInterface;
 use App\Interfaces\Admin\TrainingRepositoryInterface;
 use App\Interfaces\Admin\TrainingTypeRepositoryInterface;
 use App\Interfaces\Admin\UserRepositoryInterface;
+use App\Interfaces\ReportRepositoryInterface;
 use App\Repositories\Admin\DiscountRepository;
 use App\Repositories\Admin\MembershipPurchaseRepository;
 use App\Repositories\Admin\MembershipRepository;
 use App\Repositories\Admin\PermissionRepository;
+use App\Repositories\Admin\ReportRepository;
 use App\Repositories\Admin\RoleRepository;
 use App\Repositories\Admin\ScheduleRepository;
 use App\Repositories\Admin\TrainingRegistrationRepository;
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TrainingRepositoryInterface::class, TrainingRepository::class);
         $this->app->bind(TrainingRegistrationRepositoryInterface::class, TrainingRegistrationRepository::class);
         $this->app->bind(ScheduleRepositoryInterface::class, ScheduleRepository::class);
+        $this->app->bind(ReportRepositoryInterface::class, ReportRepository::class);
 
         // Services
         $this->app->bind(AuthStaffService::class, function ($app) {
@@ -155,7 +158,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ReportService::class, function ($app) {
-            return new ReportService();
+            return new ReportService(
+                $app->make(ReportRepositoryInterface::class),
+                $app->make(RoleRepositoryInterface::class),
+            );
         });
     }
 

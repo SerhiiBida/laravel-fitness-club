@@ -109,5 +109,14 @@
                 </ul>
             </li>
         @endif
+
+        {{--Отчеты--}}
+        @if (in_array('view reports', $permissions) || in_array('view your reports', $permissions))
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ route('admin.reports.index') }}">
+                    Reports
+                </a>
+            </li>
+        @endif
     @endauth
 </ul>

@@ -63,5 +63,6 @@ Route::group([
         'trainings' => TrainingController::class,
         'training_registrations' => TrainingRegistrationController::class,
         'schedules' => ScheduleController::class,
+        'reports' => ReportController::class,
     ]);
 });
