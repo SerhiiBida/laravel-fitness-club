@@ -161,6 +161,7 @@ class AppServiceProvider extends ServiceProvider
             return new ReportService(
                 $app->make(ReportRepositoryInterface::class),
                 $app->make(RoleRepositoryInterface::class),
+                $app->make(FileService::class),
             );
         });
     }
