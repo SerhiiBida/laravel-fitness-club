@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
-
-use App\Http\Controllers\Controller;
-use App\Models\User;
 
 class SocialAuthController extends Controller
 {
@@ -15,7 +14,7 @@ class SocialAuthController extends Controller
     {
         $authorizationCode = $request->input('code');
 
-        if(empty($authorizationCode)) {
+        if (empty($authorizationCode)) {
             return response()->json(['error' => 'Error sending data to server'], 400);
         }
 
@@ -32,7 +31,7 @@ class SocialAuthController extends Controller
             );
 
             return response()->json([
-                'token'=> $user->createToken('API Token')->plainTextToken,
+                'token' => $user->createToken('API Token')->plainTextToken,
             ], 201);
 
         } catch (\Exception $error) {

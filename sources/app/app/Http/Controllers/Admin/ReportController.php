@@ -14,9 +14,11 @@ class ReportController extends Controller
         $this->middleware('permission:download global_report')->only('globalReport');
     }
 
-    // Глобальный отчет(страница Dashboard)
+    // Генерация глобального отчета
     public function globalReport()
     {
+        $this->reportService->globalReport();
+
         return redirect()->route('admin.dashboard');
     }
 }
