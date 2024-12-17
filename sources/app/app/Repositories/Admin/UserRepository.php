@@ -5,13 +5,16 @@ namespace App\Repositories\Admin;
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository implements UserRepositoryInterface
 {
 
-    public function isStaff(int $id)
+    public function isStaff(int $id): bool
     {
-        return User::find($id)->is_staff;
+        $user = User::find($id);
+
+        return $user && $user->is_staff;
     }
 
     public function all(): Collection
@@ -20,7 +23,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
-    public function paginate(int $perPage)
+    public function paginate(int $perPage): LengthAwarePaginator
     {
         return User::paginate($perPage);
     }

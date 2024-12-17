@@ -36,7 +36,7 @@ Route::group([
     Route::middleware(['auth:sanctum'])->get('/logout', [AuthStaffController::class, 'logout'])->name('admin.logout');
 });
 
-// Admin Dashboard(Нужно проверка на доступ к Админке!! Нужно ПО свое!!)
+// Admin Dashboard
 Route::middleware(['staff'])->get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
 // CRUD таблиц

@@ -33,6 +33,7 @@ use App\Services\Admin\CRUD\TrainingRegistrationService;
 use App\Services\Admin\CRUD\TrainingService;
 use App\Services\Admin\CRUD\TrainingTypeService;
 use App\Services\Admin\CRUD\UserService;
+use App\Services\Admin\DashboardService;
 use App\Services\FileService;
 use App\Services\MailService;
 use Illuminate\Pagination\Paginator;
@@ -141,6 +142,10 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(TrainingRegistrationRepositoryInterface::class),
                 $app->make(MailService::class)
             );
+        });
+
+        $this->app->bind(DashboardService::class, function ($app) {
+            return new DashboardService();
         });
     }
 
