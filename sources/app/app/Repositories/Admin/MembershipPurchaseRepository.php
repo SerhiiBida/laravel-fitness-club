@@ -19,4 +19,9 @@ class MembershipPurchaseRepository implements MembershipPurchaseRepositoryInterf
     {
         return MembershipPurchase::with(['user', 'membership'])->paginate($perPage);
     }
+
+    public function countPerMonth(int $year, int $month): int
+    {
+        return MembershipPurchase::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
+    }
 }

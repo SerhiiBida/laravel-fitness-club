@@ -18,4 +18,9 @@ class MembershipRepository implements MembershipRepositoryInterface
     {
         return Membership::with('discount')->paginate($perPage);
     }
+
+    public function countPerMonth(int $year, int $month): int
+    {
+        return Membership::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
+    }
 }

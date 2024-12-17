@@ -4,8 +4,8 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -22,9 +22,13 @@ class UserRepository implements UserRepositoryInterface
         return User::all();
     }
 
-
     public function paginate(int $perPage): LengthAwarePaginator
     {
         return User::paginate($perPage);
+    }
+
+    public function countPerMonth(int $year, int $month): int
+    {
+        return User::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
     }
 }

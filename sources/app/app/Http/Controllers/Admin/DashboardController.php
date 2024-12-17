@@ -16,8 +16,8 @@ class DashboardController extends Controller
 
     public function dashboard()
     {
-        $data = $this->dashboardService->dashboard();
+        $statistics = $this->dashboardService->dashboard();
 
-        return view('admin.dashboard', compact('data'));
+        return view('admin.dashboard', compact('statistics'));
     }
 }

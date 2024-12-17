@@ -17,7 +17,7 @@ class PermissionRoleSeeder extends Seeder
         PermissionsEnv::initialize();
 
         // Разрешения
-        $permissions = PermissionsEnv::$AllPermissions;
+        $permissions = PermissionsEnv::$allPermissions;
 
         foreach ($permissions as $permissionName) {
             Permission::create(['name' => $permissionName]);

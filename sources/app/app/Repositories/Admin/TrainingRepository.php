@@ -19,4 +19,9 @@ class TrainingRepository implements TrainingRepositoryInterface
     {
         return Training::with(['trainingType', 'user'])->paginate($perPage);
     }
+
+    public function countPerMonth(int $year, int $month): int
+    {
+        return Training::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
+    }
 }
