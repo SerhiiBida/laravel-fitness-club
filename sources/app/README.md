@@ -28,6 +28,8 @@ composer dump-autoload
 docker compose up -d
 docker exec -it laravel-fitness-club-app-1 sh
 php artisan serve
+php artisan queue:work
+php artisan reverb:start --debug
 ```
 
 Запуск Node:
@@ -119,6 +121,15 @@ php artisan migrate:fresh --seed
 
 ```sh
 php artisan queue:work
+```
+
+Запуска Reverb сервера для WebSocket
+
+```sh
+php artisan reverb:start --debug
+
+# Перезапуск
+php artisan reverb:restart
 ```
 
 Очистка кэша, если ошибки:

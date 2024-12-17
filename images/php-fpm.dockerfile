@@ -5,11 +5,13 @@ RUN apk --no-cache update \
         autoconf \
         g++ \
         make \
-        openssl-dev
+        openssl-dev \
+        php-pcntl
+
 
 RUN pecl install redis \
     && docker-php-ext-enable redis \
-    && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql pcntl
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
