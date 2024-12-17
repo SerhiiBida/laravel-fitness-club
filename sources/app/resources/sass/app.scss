@@ -1,5 +1,5 @@
 // Fonts
-//@import url('https://fonts.bunny.net/css?family=Nunito');
+@import url('https://fonts.bunny.net/css?family=Nunito');
 
 // Variables
 @import 'variables';
@@ -33,4 +33,17 @@ body {
 .main {
     flex: 1;
     min-height: 100vh;
+}
+
+// dashboard.blade.php
+.square {
+    width: 100%;
+    height: 350px;
+    max-height: 350px;
+    border: 1px gray solid;
+    border-radius: 6px;
+}
+
+.row-height {
+    height: 100%;
 }

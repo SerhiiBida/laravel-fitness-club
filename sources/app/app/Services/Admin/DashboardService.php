@@ -33,6 +33,11 @@ class DashboardService
 
         $membershipsPurchasedPerMonth = $this->membershipPurchaseRepository->countPerMonth($currentYear, $currentMonth);
 
-        return [$usersPerMonth, $trainingsPerMonth, $membershipsPerMonth, $membershipsPurchasedPerMonth];
+        return [
+            'countUsers' => $usersPerMonth,
+            'countTrainings' => $trainingsPerMonth,
+            'countMemberships' => $membershipsPerMonth,
+            'countMembershipsPurchased' => $membershipsPurchasedPerMonth
+        ];
     }
 }
