@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CRUD\TrainingRegistrationController;
 use App\Http\Controllers\Admin\CRUD\TrainingTypeController;
 use App\Http\Controllers\Admin\CRUD\UserController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,8 +37,15 @@ Route::group([
     Route::middleware(['auth:sanctum'])->get('/logout', [AuthStaffController::class, 'logout'])->name('admin.logout');
 });
 
-// Admin Dashboard
-Route::middleware(['staff'])->get('admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+// Главная страница Dashboard
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => ['staff'],
+], function () {
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/generate-global-report', [ReportController::class, 'globalReport'])->name('globalReport');
+});
 
 // CRUD таблиц
 Route::group([
