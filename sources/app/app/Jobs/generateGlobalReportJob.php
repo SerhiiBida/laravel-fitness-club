@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\MessageEvent;
 use App\Services\Admin\ReportService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,11 +34,11 @@ class generateGlobalReportJob implements ShouldQueue
         $check = $reportService->generateReport('admin.reports.global', $data, 'Global Report', $this->userId);
 
         // Сообщение(WebSocket)
-//        if ($check) {
-//            MessageEvent::dispatch($this->userId, 'Global Report generated. Check this in the "Reports" menu.');
-//
-//        } else {
-//            MessageEvent::dispatch($this->userId, 'GError creating report. Please try again later.');
-//        }
+        if ($check) {
+            MessageEvent::dispatch($this->userId, 'Global Report generated. Check this in the "Reports" menu.');
+
+        } else {
+            MessageEvent::dispatch($this->userId, 'GError creating report. Please try again later.');
+        }
     }
 }

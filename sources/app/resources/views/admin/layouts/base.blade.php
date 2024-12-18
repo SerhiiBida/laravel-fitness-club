@@ -30,6 +30,8 @@
         </div>
 
         @yield('content')
+
+        @includeIf('admin.components.message')
     </main>
 
     @includeIf('admin.layouts.footer')
@@ -40,6 +42,6 @@
         userId: @auth {{ auth()->user()->id }} @else null @endauth
     };
 </script>
-@vite(['resources/js/events.js'])
+@vite(['resources/js/events.js', 'resources/js/action.js'])
 </body>
 </html>

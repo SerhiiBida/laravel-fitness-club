@@ -37,6 +37,7 @@ class MembershipPurchaseRepository implements MembershipPurchaseRepositoryInterf
             ->whereMonth('membership_purchases.created_at', $month)
             ->where('membership_purchases.status', 'paid')
             ->groupBy('membership_id')
+            ->orderBy('count', 'desc')
             ->get();
     }
 }

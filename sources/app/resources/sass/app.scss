@@ -47,3 +47,12 @@ body {
 .row-height {
     height: 100%;
 }
+
+// message.blade
+.message-wrapper {
+    z-index: 999;
+}
+
+.toast-message {
+    max-width: 100%;
+}

@@ -26,9 +26,12 @@ class ReportService
 
     public function index()
     {
-        $userId = Auth::id();
+        $user = Auth::user();
 
-        if (!$this->roleRepository->hasPermission($userId, 'view reports')) {
+        $userId = $user->id;
+        $roleId = $user->role_id;
+
+        if (!$this->roleRepository->hasPermission($roleId, 'view reports')) {
             $reports = $this->reportRepository->paginate(25, $userId);
 
         } else {
@@ -73,7 +76,7 @@ class ReportService
     // Создание файла отчета
     public function generateReport(string $view, array $data, string $nameReport, int $userId): bool
     {
-        $pdf = Pdf::loadView($view, ['data' => $data]);
+        $pdf = Pdf::loadView($view, compact('data'));
 
         list($fullPath, $path) = $this->fileService->generateUniquePath('reports', 'pdf', 'report');
 
