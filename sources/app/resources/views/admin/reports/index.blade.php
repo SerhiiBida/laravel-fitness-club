@@ -31,7 +31,7 @@
                             </a>
                         </td>
                         <td>
-                            {{ $role->name }}
+                            {{ $report->name }}
                         </td>
                         <td>
                             <a
@@ -43,7 +43,7 @@
                             </a>
                         </td>
                         <td>
-                            {{ $role->created_at }}
+                            {{ $report->created_at }}
                         </td>
                         @if (in_array('delete reports', $permissions) || in_array('delete your reports', $permissions))
                             <td>

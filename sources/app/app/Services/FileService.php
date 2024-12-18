@@ -49,9 +49,11 @@ class FileService
 
         $path = $folder . '/' . $fileName . $currentDate . uniqid('', true) . ".$fileType";
 
+        $fullPath = storage_path('app/public/' . $path);
+
         return [
-            'fullPath' => public_path($path),
-            'path' => $path,
+            $fullPath,
+            $path
         ];
     }
 
