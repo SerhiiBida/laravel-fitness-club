@@ -34,5 +34,12 @@
 
     @includeIf('admin.layouts.footer')
 </div>
+
+<script>
+    window.user = {
+        userId: @auth {{ auth()->user()->id }} @else null @endauth
+    };
+</script>
+@vite(['resources/js/events.js'])
 </body>
 </html>

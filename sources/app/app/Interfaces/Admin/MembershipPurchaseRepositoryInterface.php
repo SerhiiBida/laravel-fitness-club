@@ -12,4 +12,6 @@ interface MembershipPurchaseRepositoryInterface
     public function paginate(int $perPage): LengthAwarePaginator;
 
     public function countPerMonth(int $year, int $month): int;
+
+    public function countEachPerMonthly(int $year, int $month): Collection;
 }

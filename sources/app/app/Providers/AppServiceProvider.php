@@ -162,6 +162,8 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(ReportRepositoryInterface::class),
                 $app->make(RoleRepositoryInterface::class),
                 $app->make(FileService::class),
+                $app->make(DashboardService::class),
+                $app->make(MembershipPurchaseRepositoryInterface::class),
             );
         });
     }

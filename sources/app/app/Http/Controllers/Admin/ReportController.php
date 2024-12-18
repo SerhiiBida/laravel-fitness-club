@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\generateGlobalReportJob;
 use App\Models\Report;
 use App\Services\Admin\ReportService;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -34,7 +36,10 @@ class ReportController extends Controller
     // Генерация глобального отчета
     public function globalReport()
     {
-        $this->reportService->globalReport();
+        $userId = Auth::id();
+
+        // Запуск очереди
+        generateGlobalReportJob::dispatch($userId);
 
         return redirect()->route('admin.dashboard');
     }
