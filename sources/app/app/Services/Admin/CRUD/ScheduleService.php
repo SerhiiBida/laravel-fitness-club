@@ -130,7 +130,7 @@ class ScheduleService
     public function destroy(Schedule $schedule): array
     {
         if ($schedule->users()->exists()) {
-            return ['status' => 'error', 'message' => 'The user has already visited it.'];
+            return ['status' => 'error', 'message' => 'The user has already registered.'];
         }
 
         $schedule->delete();

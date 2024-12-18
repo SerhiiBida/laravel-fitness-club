@@ -92,7 +92,7 @@
                         <div class="col-md-3">
                             <label for="users" class="form-label">
                                 <strong>
-                                    Visited:
+                                    Visit:
                                 </strong>
                             </label>
                         </div>

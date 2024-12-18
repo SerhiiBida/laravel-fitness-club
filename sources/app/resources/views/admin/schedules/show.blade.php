@@ -58,7 +58,7 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <strong>
-                            Visited:
+                            Visit:
                         </strong>
                     </div>
                     <div class="col-md-9">
