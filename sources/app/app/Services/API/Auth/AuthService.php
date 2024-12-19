@@ -6,6 +6,7 @@ use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthService
 {
@@ -14,6 +15,29 @@ class AuthService
     )
     {
 
+    }
+
+    public function loginGoogle(array $data): array
+    {
+        try {
+            // Получаем user из Google
+            $googleUser = Socialite::driver('google')->with(['code' => $data['code']])->stateless()->user();
+
+            $user = User::updateOrCreate(
+                ['email' => $googleUser->getEmail()],
+                [
+                    'username' => $googleUser->getName(),
+                ]
+            );
+
+            // Токен авторизации
+            $token = $user->createToken('API Token')->plainTextToken;
+
+            return ['status' => 'success', 'token' => $token];
+
+        } catch (\Exception $error) {
+            return ['status' => 'error', 'message' => 'User is invalid', 'code' => 500];
+        }
     }
 
     public function login(array $data): array

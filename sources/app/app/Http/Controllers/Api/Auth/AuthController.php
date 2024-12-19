@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginAuthRequest;
+use App\Http\Requests\Api\Auth\LoginGoogleAuthRequest;
 use App\Http\Requests\Api\Auth\RegisterAuthRequest;
 use App\Services\API\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
@@ -17,6 +18,19 @@ class AuthController extends Controller
     )
     {
 
+    }
+
+    public function loginGoogle(LoginGoogleAuthRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        $result = $this->authService->loginGoogle($data);
+
+        if ($result['status'] === 'error') {
+            return response()->json(['message' => $result['message']], $result['code']);
+        }
+
+        return response()->json(['token' => $result['token']], 201);
     }
 
     public function login(LoginAuthRequest $request): JsonResponse

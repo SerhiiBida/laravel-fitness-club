@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
-use App\Http\Controllers\Api\Auth\SocialAuthController;
 use App\Http\Controllers\Api\GlobalSearchController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
@@ -25,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 // Аутентификация
 Route::group(['prefix' => '/auth'], function () {
-    Route::post('/login-google', [SocialAuthController::class, 'loginGoogle']);
+    Route::post('/login-google', [AuthController::class, 'loginGoogle']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
