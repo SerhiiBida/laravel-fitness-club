@@ -1,18 +1,16 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\GlobalSearchController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
 use App\Http\Controllers\Api\ScheduleController;
+use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\TrainingController;
 use App\Http\Controllers\Api\TrainingRegistrationController;
 use App\Http\Controllers\Api\TrainingTypeController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

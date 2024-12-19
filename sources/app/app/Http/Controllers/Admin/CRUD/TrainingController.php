@@ -47,7 +47,9 @@ class TrainingController extends Controller
     {
         $data = $request->validated();
 
-        $result = $this->trainingService->store($request, $data);
+        $data['image'] = $request->hasFile('image') ? $request->file('image') : null;
+
+        $result = $this->trainingService->store($data);
 
         if ($result['status'] === 'error') {
             return back()->withErrors(['errorMessage' => $result['message']]);

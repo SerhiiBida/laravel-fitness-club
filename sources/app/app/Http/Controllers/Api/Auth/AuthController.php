@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
-use App\Http\Controllers\Controller;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -30,11 +29,12 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'token'=> auth()->user()->createToken('API Token')->plainTextToken,
+            'token' => auth()->user()->createToken('API Token')->plainTextToken,
         ], 201);
     }
 
-    public function register(Request $request): JsonResponse {
+    public function register(Request $request): JsonResponse
+    {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|between:6,18|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
@@ -52,7 +52,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'token'=> $user->createToken('API Token')->plainTextToken,
+            'token' => $user->createToken('API Token')->plainTextToken,
         ], 201);
     }
 

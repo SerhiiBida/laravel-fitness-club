@@ -2,7 +2,6 @@
 
 namespace App\Services\Admin\CRUD;
 
-use App\Http\Requests\Admin\Training\StoreTrainingRequest;
 use App\Http\Requests\Admin\Training\UpdateTrainingRequest;
 use App\Models\Training;
 use App\Repositories\Admin\MembershipRepository;
@@ -53,7 +52,7 @@ class TrainingService
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTrainingRequest $request, array $data): array
+    public function store(array $data): array
     {
         DB::beginTransaction();
 
@@ -63,8 +62,8 @@ class TrainingService
             unset($data['memberships']);
 
             // Есть фото
-            if ($request->hasFile('image')) {
-                $data['image_path'] = $this->fileService->save($request->file('image'), 'trainings');
+            if (!is_null($data['image'])) {
+                $data['image_path'] = $this->fileService->save($data['image'], 'trainings');
             }
 
             $training = Training::create($data);
