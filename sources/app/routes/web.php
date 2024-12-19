@@ -58,11 +58,12 @@ Route::group([
         'roles' => RoleController::class,
         'discounts' => DiscountController::class,
         'memberships' => MembershipController::class,
-        'membership_purchases' => MembershipPurchaseController::class,
-        'training_types' => TrainingTypeController::class,
         'trainings' => TrainingController::class,
-        'training_registrations' => TrainingRegistrationController::class,
         'schedules' => ScheduleController::class,
         'reports' => ReportController::class,
     ]);
+
+    Route::resource('membership-purchases', MembershipPurchaseController::class)->names('membership_purchases');
+    Route::resource('training-types', TrainingTypeController::class)->names('training_types');
+    Route::resource('training-registrations', TrainingRegistrationController::class)->names('training_registrations');
 });
