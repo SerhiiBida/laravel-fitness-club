@@ -23,4 +23,18 @@ class MembershipRepository implements MembershipRepositoryInterface
     {
         return Membership::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
     }
+
+    public function find(int $id, bool $isOnlyPublished = false): ?Membership
+    {
+        return Membership::with(['discount'])
+            ->addSelect(['discounted_price' => function ($query) {
+                $query->selectRaw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2)')
+                    ->from('discounts')
+                    ->whereColumn('discounts.id', 'memberships.discount_id');
+            }])
+            ->when($isOnlyPublished, function ($query) {
+                $query->where('is_published', 1);
+            })
+            ->find($id);
+    }
 }

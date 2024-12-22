@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Membership;
+use App\Services\API\MembershipService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,29 +12,26 @@ use Illuminate\Support\Facades\Validator;
 
 class MembershipController extends Controller
 {
+    public function __construct(
+        protected MembershipService $membershipService
+    )
+    {
+
+    }
+
     /**
      * Дать 1 абонемент
      */
     public function show(string $id): JsonResponse
     {
-        // Абонемент
-        $membershipQuery = Membership::query()
-            ->leftJoin('discounts', 'memberships.discount_id', '=', 'discounts.id')
-            ->select('memberships.*', 'discounts.percent as discount_percent')
-            ->where('memberships.is_published', '=', 1)
-            ->where('memberships.id', '=', $id);
+        $result = $this->membershipService->show((int)$id);
 
-        // Вычисляем поле с учетом скидки
-        $membershipQuery->addSelect(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2) as discounted_price'));
-
-        $membership = $membershipQuery->first();
-
-        if(!$membership){
-            return response()->json(['message' => 'Access denied'], 403);
+        if ($result['status'] === 'error') {
+            return response()->json(['message' => $result['message']], $result['code']);
         }
 
         return response()->json([
-            'membership' => $membership
+            'membership' => $result['membership']
         ]);
     }
 
@@ -74,13 +72,13 @@ class MembershipController extends Controller
         $membershipQuery->addSelect(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2) as discounted_price'));
 
         // Поиск
-        if ($search){
-            $membershipQuery->where('memberships.name', 'like', '%'.$search.'%');
+        if ($search) {
+            $membershipQuery->where('memberships.name', 'like', '%' . $search . '%');
         }
 
         // Сортировка
         if ($sort && in_array($sort, $sortOptions)) {
-            if($sort === 'discounted_price') {
+            if ($sort === 'discounted_price') {
                 $membershipQuery->orderBy(DB::raw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2)'));
             } else {
                 $membershipQuery->orderBy($sort);
@@ -89,7 +87,7 @@ class MembershipController extends Controller
 
         // Фильтрация
         if ($filter) {
-            if($filter === 4) {
+            if ($filter === 4) {
                 $membershipQuery->having('discounted_price', '>=', $filterOptions[$filter]['left']);
             } else {
                 $membershipQuery
@@ -99,7 +97,7 @@ class MembershipController extends Controller
         }
 
         // Записей на странице
-        if ($perPage){
+        if ($perPage) {
             $memberships = $membershipQuery->paginate($perPage);
         } else {
             $memberships = $membershipQuery->paginate(20);
