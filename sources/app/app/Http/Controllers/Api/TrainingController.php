@@ -29,21 +29,17 @@ class TrainingController extends Controller
         ]);
     }
 
-    // Дать данные
-    public function show(string $id): JsonResponse
+    // Дать определенную тренировку
+    public function show(Training $training): JsonResponse
     {
-        // Тренировка
-        $training = Training::with('user', 'memberships')
-            ->where('is_published', 1)
-            ->where('id', $id)
-            ->first();
+        $result = $this->trainingService->show($training);
 
-        if (!$training) {
-            return response()->json(['message' => 'Access denied'], 403);
+        if ($result['status'] === 'error') {
+            return response()->json(['message' => $result['message']], $result['code']);
         }
 
         return response()->json([
-            'training' => $training
+            'training' => $result['training']
         ]);
     }
 

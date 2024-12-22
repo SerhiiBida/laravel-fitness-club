@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Interfaces\MembershipRepositoryInterface;
 use App\Interfaces\TrainingRegistrationRepositoryInterface;
+use App\Interfaces\TrainingRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Services\API\Auth\AuthService;
 use App\Services\API\MembershipService;
@@ -27,7 +28,10 @@ class ApiServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(TrainingService::class, function ($app) {
-            return new TrainingService($app->make(TrainingRegistrationRepositoryInterface::class));
+            return new TrainingService(
+                $app->make(TrainingRegistrationRepositoryInterface::class),
+                $app->make(TrainingRepositoryInterface::class),
+            );
         });
     }
 
