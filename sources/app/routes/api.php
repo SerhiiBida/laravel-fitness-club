@@ -75,8 +75,8 @@ Route::group([
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/search', [TrainingController::class, 'search']);
-    Route::post('/check-access', [TrainingController::class, 'checkAccess']);
-    Route::get('/{id}', [TrainingController::class, 'show']);
+    Route::get('/check-access/{training}', [TrainingController::class, 'checkAccess']);
+    Route::get('/{training}', [TrainingController::class, 'show']);
 });
 
 // Зарегистрированные на тренировки

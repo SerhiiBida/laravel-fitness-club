@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\TrainingRegistrationStatus;
 use App\Interfaces\TrainingRegistrationRepositoryInterface;
 use App\Models\TrainingRegistration;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -26,5 +27,13 @@ class TrainingRegistrationRepository implements TrainingRegistrationRepositoryIn
             ->where('training_id', $trainingId)
             ->where('status', 'active')
             ->get();
+    }
+
+    public function checkRegister(int $userId, int $trainingId): bool
+    {
+        return TrainingRegistration::where('user_id', $userId)
+            ->where('training_id', $trainingId)
+            ->where('status', TrainingRegistrationStatus::Active)
+            ->exists();
     }
 }
