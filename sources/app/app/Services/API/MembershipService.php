@@ -3,7 +3,7 @@
 namespace App\Services\API;
 
 use App\Interfaces\MembershipRepositoryInterface;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class MembershipService
 {
@@ -16,7 +16,7 @@ class MembershipService
 
     public function show(int $id): array
     {
-        $membership = $this->membershipRepository->find($id);
+        $membership = $this->membershipRepository->find($id, true);
 
         if (!$membership) {
             return ['status' => 'error', 'message' => 'Access denied.', 'code' => 403];
@@ -25,8 +25,13 @@ class MembershipService
         return ['status' => 'success', 'membership' => $membership];
     }
 
-    public function search(array $data): Collection
+    public function search(array $data): LengthAwarePaginator
     {
+        $perPage = (int)($data['perPage'] ?? 25);
+        $search = $data['search'] ?? null;
+        $filter = (int)($data['filter'] ?? null);
+        $sort = $data['sort'] ?? null;
 
+        return $this->membershipRepository->paginate($perPage, $search, $filter, $sort, true);
     }
 }

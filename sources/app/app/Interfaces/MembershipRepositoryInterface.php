@@ -10,9 +10,9 @@ interface MembershipRepositoryInterface
 {
     public function all(): Collection;
 
-    public function paginate(int $perPage): LengthAwarePaginator;
-
     public function countPerMonth(int $year, int $month): int;
 
     public function find(int $id, bool $isOnlyPublished): ?Membership;
+
+    public function paginate(int $perPage, ?string $search = null, ?int $filter = null, ?string $sort = null, bool $isOnlyPublished = false): LengthAwarePaginator;
 }

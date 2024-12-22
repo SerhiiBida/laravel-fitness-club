@@ -14,11 +14,6 @@ class MembershipRepository implements MembershipRepositoryInterface
         return Membership::all();
     }
 
-    public function paginate(int $perPage): LengthAwarePaginator
-    {
-        return Membership::with('discount')->paginate($perPage);
-    }
-
     public function countPerMonth(int $year, int $month): int
     {
         return Membership::whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
@@ -36,5 +31,29 @@ class MembershipRepository implements MembershipRepositoryInterface
                 $query->where('is_published', 1);
             })
             ->find($id);
+    }
+
+    // Поиск на Vue
+    public function paginate(int $perPage, ?string $search = null, ?int $filter = null, ?string $sort = null, bool $isOnlyPublished = false): LengthAwarePaginator
+    {
+        return Membership::with(['discount'])
+            ->addSelect(['discounted_price' => function ($query) {
+                $query->selectRaw('ROUND((memberships.price - (COALESCE(memberships.price, 0) / 100) * discounts.percent), 2)')
+                    ->from('discounts')
+                    ->whereColumn('discounts.id', 'memberships.discount_id');
+            }])
+            ->when($isOnlyPublished, function ($query) {
+                $query->where('is_published', 1);
+            })
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->when($filter, function ($query) use ($filter) {
+                $query->having('discounted_price', '>=', $filter);
+            })
+            ->when($sort, function ($query) use ($sort) {
+                $query->orderBy($sort);
+            })
+            ->paginate($perPage);
     }
 }
