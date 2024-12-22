@@ -1,17 +1,17 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AuthStaffController;
-use App\Http\Controllers\Admin\CRUD\DiscountController;
-use App\Http\Controllers\Admin\CRUD\MembershipController;
-use App\Http\Controllers\Admin\CRUD\MembershipPurchaseController;
-use App\Http\Controllers\Admin\CRUD\RoleController;
-use App\Http\Controllers\Admin\CRUD\ScheduleController;
-use App\Http\Controllers\Admin\CRUD\TrainingController;
-use App\Http\Controllers\Admin\CRUD\TrainingRegistrationController;
-use App\Http\Controllers\Admin\CRUD\TrainingTypeController;
-use App\Http\Controllers\Admin\CRUD\UserController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\MembershipController;
+use App\Http\Controllers\Admin\MembershipPurchaseController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\TrainingController;
+use App\Http\Controllers\Admin\TrainingRegistrationController;
+use App\Http\Controllers\Admin\TrainingTypeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,9 +32,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::group([
     'prefix' => 'admin',
 ], function () {
-    Route::get('/login', [AuthStaffController::class, 'showLogin'])->name('admin.showLogin');
+    Route::get('/login', [AuthStaffController::class, 'showLogin'])->name('admin.show_login');
     Route::post('/login', [AuthStaffController::class, 'login'])->name('admin.login');
-    Route::middleware(['auth:sanctum'])->get('/logout', [AuthStaffController::class, 'logout'])->name('admin.logout');
+    Route::middleware(['staff'])->get('/logout', [AuthStaffController::class, 'logout'])->name('admin.logout');
 });
 
 // Главная страница Dashboard
@@ -44,7 +44,7 @@ Route::group([
     'middleware' => ['staff'],
 ], function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/generate-global-report', [ReportController::class, 'globalReport'])->name('globalReport');
+    Route::get('/generate-global-report', [ReportController::class, 'globalReport'])->name('global_report');
 });
 
 // CRUD таблиц

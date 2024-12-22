@@ -2,7 +2,7 @@
 
 namespace App\Services\API\Auth;
 
-use App\Interfaces\Admin\UserRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
