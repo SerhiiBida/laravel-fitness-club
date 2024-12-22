@@ -47,7 +47,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $userId = $this->userService->store($request, $data);
+        $data['image'] = $request->hasFile('image') ? $request->file('image') : null;
+
+        $userId = $this->userService->store($data);
 
         return redirect()->route('admin.users.show', $userId);
     }
@@ -79,7 +81,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $this->userService->update($request, $user, $data);
+        $data['image'] = $request->hasFile('image') ? $request->file('image') : null;
+
+        $this->userService->update($user, $data);
 
         return redirect()->route('admin.users.show', $user->id);
     }

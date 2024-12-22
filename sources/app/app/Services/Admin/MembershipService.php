@@ -2,8 +2,6 @@
 
 namespace App\Services\Admin;
 
-use App\Http\Requests\Admin\Membership\StoreMembershipRequest;
-use App\Http\Requests\Admin\Membership\UpdateMembershipRequest;
 use App\Interfaces\DiscountRepositoryInterface;
 use App\Interfaces\MembershipRepositoryInterface;
 use App\Models\Membership;
@@ -40,14 +38,14 @@ class MembershipService
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMembershipRequest $request, array $data): Membership
+    public function store(array $data): Membership
     {
         $data = array_filter($data, function ($value) {
             return $value !== "" && $value !== null;
         });
 
-        if ($request->hasFile('image')) {
-            $data['image_path'] = $this->fileService->save($request->file('image'), 'memberships');
+        if (!is_null($data['image'])) {
+            $data['image_path'] = $this->fileService->save($data['image'], 'memberships');
         }
 
         return Membership::create($data);
@@ -78,14 +76,14 @@ class MembershipService
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMembershipRequest $request, Membership $membership, array $data): void
+    public function update(Membership $membership, array $data): void
     {
-        if ($request->hasFile('image')) {
+        if (!is_null($data['image'])) {
             if (basename($membership->image_path) !== 'default.png') {
                 $this->fileService->delete($membership->image_path);
             }
 
-            $data['image_path'] = $this->fileService->save($request->file('image'), 'memberships');
+            $data['image_path'] = $this->fileService->save($data['image'], 'memberships');
         }
 
         $membership->update($data);

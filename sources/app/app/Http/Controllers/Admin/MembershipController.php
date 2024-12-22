@@ -47,7 +47,9 @@ class MembershipController extends Controller
     {
         $data = $request->validated();
 
-        $membership = $this->membershipService->store($request, $data);
+        $data['image'] = $request->hasFile('image') ? $request->file('image') : null;
+
+        $membership = $this->membershipService->store($data);
 
         return redirect()->route('admin.memberships.show', $membership->id);
     }
@@ -79,7 +81,9 @@ class MembershipController extends Controller
     {
         $data = $request->validated();
 
-        $this->membershipService->update($request, $membership, $data);
+        $data['image'] = $request->hasFile('image') ? $request->file('image') : null;
+
+        $this->membershipService->update($membership, $data);
 
         return redirect()->route('admin.memberships.show', $membership->id);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Services\Admin;
 
-use App\Http\Requests\Admin\Training\UpdateTrainingRequest;
 use App\Models\Training;
 use App\Repositories\MembershipRepository;
 use App\Repositories\TrainingRegistrationRepository;
@@ -130,7 +129,7 @@ class TrainingService
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTrainingRequest $request, Training $training, array $data): array
+    public function update(Training $training, array $data): array
     {
         DB::beginTransaction();
 
@@ -140,12 +139,12 @@ class TrainingService
             unset($data['memberships']);
 
             // Есть фото
-            if ($request->hasFile('image')) {
+            if (!is_null($data['image'])) {
                 if (basename($training->image_path) !== 'default.png') {
                     $this->fileService->delete($training->image_path);
                 }
 
-                $data['image_path'] = $this->fileService->save($request->file('image'), 'trainings');
+                $data['image_path'] = $this->fileService->save($data['image'], 'trainings');
             }
 
             $training->update($data);

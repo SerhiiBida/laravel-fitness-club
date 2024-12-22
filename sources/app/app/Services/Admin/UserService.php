@@ -2,8 +2,6 @@
 
 namespace App\Services\Admin;
 
-use App\Http\Requests\Admin\User\StoreUserRequest;
-use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Interfaces\RoleRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
@@ -37,7 +35,7 @@ class UserService
     }
 
     // Создание записи
-    public function store(StoreUserRequest $request, array $data)
+    public function store(array $data)
     {
         // Убираем пустые значения
         $data = array_filter($data, function ($value) {
@@ -46,8 +44,8 @@ class UserService
 
         $data['password'] = Hash::make($data['password']);
 
-        if ($request->hasFile('image')) {
-            $data['image_path'] = $this->fileService->save($request->file('image'), 'users');
+        if (!is_null($data['image'])) {
+            $data['image_path'] = $this->fileService->save($data['image'], 'users');
         }
 
         $user = User::create($data);
@@ -72,7 +70,7 @@ class UserService
     }
 
     // Обновление данных записи
-    public function update(UpdateUserRequest $request, User $user, array $data)
+    public function update(User $user, array $data)
     {
         // Убираем пустые значения
         $data = array_filter($data, function ($value) {
@@ -84,12 +82,12 @@ class UserService
         }
 
         // Обновление фото
-        if ($request->hasFile('image')) {
+        if (!is_null($data['image'])) {
             if (basename($user->image_path) !== 'default.png') {
                 $this->fileService->delete($user->image_path);
             }
 
-            $data['image_path'] = $this->fileService->save($request->file('image'), 'users');
+            $data['image_path'] = $this->fileService->save($data['image'], 'users');
         }
 
         $user->update($data);
