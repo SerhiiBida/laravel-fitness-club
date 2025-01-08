@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\GlobalSearchController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\MembershipPurchaseController;
@@ -7,12 +8,8 @@ use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\TrainingController;
 use App\Http\Controllers\Api\TrainingRegistrationController;
 use App\Http\Controllers\Api\TrainingTypeController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +24,7 @@ use App\Http\Controllers\Api\UserController;
 
 // Аутентификация
 Route::group(['prefix' => '/auth'], function () {
-    Route::post('/login-google', [SocialAuthController::class, 'loginGoogle']);
+    Route::post('/login-google', [AuthController::class, 'loginGoogle']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
@@ -78,8 +75,8 @@ Route::group([
     'middleware' => 'auth:sanctum'
 ], function () {
     Route::get('/search', [TrainingController::class, 'search']);
-    Route::post('/check-access', [TrainingController::class, 'checkAccess']);
-    Route::get('/{id}', [TrainingController::class, 'show']);
+    Route::get('/check-access/{training}', [TrainingController::class, 'checkAccess']);
+    Route::get('/{training}', [TrainingController::class, 'show']);
 });
 
 // Зарегистрированные на тренировки

@@ -2,10 +2,10 @@
 
 namespace App\Services\Admin;
 
-use App\Interfaces\Admin\MembershipPurchaseRepositoryInterface;
-use App\Interfaces\Admin\MembershipRepositoryInterface;
-use App\Interfaces\Admin\TrainingRepositoryInterface;
-use App\Interfaces\Admin\UserRepositoryInterface;
+use App\Interfaces\MembershipPurchaseRepositoryInterface;
+use App\Interfaces\MembershipRepositoryInterface;
+use App\Interfaces\TrainingRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use Carbon\Carbon;
 
 class DashboardService

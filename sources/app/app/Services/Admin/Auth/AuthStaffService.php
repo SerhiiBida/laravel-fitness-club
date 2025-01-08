@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin\Auth;
 
-use App\Interfaces\Admin\UserRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
 class AuthStaffService

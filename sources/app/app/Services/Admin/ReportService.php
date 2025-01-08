@@ -2,9 +2,9 @@
 
 namespace App\Services\Admin;
 
-use App\Interfaces\Admin\MembershipPurchaseRepositoryInterface;
-use App\Interfaces\Admin\RoleRepositoryInterface;
+use App\Interfaces\MembershipPurchaseRepositoryInterface;
 use App\Interfaces\ReportRepositoryInterface;
+use App\Interfaces\RoleRepositoryInterface;
 use App\Models\Report;
 use App\Services\FileService;
 use Barryvdh\DomPDF\Facade\Pdf;

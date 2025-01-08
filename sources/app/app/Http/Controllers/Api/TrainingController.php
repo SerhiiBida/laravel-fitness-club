@@ -2,64 +2,44 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\TrainingRegistrationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Training;
-use App\Models\TrainingRegistration;
 use App\Models\TrainingType;
+use App\Services\API\TrainingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TrainingController extends Controller
 {
-    // Проверка приватности
-    public function checkAccess(Request $request): JsonResponse
+    public function __construct(
+        protected TrainingService $trainingService
+    )
     {
-        $validator = Validator::make($request->all(), [
-            'trainingId' => 'required|integer|exists:trainings,id',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Incorrect data format'], 422);
-        }
+    }
 
-        $trainingId = $request->input('trainingId');
-
-        // Проверка приватности
-        $training = Training::find($trainingId);
-
-        $isPrivate = $training->is_private;
-
-        // Проверка регистрации на тренировку
-        $userId = Auth::id();
-
-        $checkRegister = TrainingRegistration::where('user_id', $userId)
-            ->where('training_id', $trainingId)
-            ->where('status', TrainingRegistrationStatus::Active)
-            ->exists();
+    // Проверка приватности
+    public function checkAccess(Training $training): JsonResponse
+    {
+        $isAccess = $this->trainingService->checkAccess($training);
 
         return response()->json([
-            'is_access' => $checkRegister || !$isPrivate,
+            'is_access' => $isAccess,
         ]);
     }
 
-    // Дать данные
-    public function show(string $id): JsonResponse
+    // Дать определенную тренировку
+    public function show(Training $training): JsonResponse
     {
-        // Тренировка
-        $training = Training::with('user', 'memberships')
-            ->where('is_published', 1)
-            ->where('id', $id)
-            ->first();
+        $result = $this->trainingService->show($training);
 
-        if(!$training){
-            return response()->json(['message' => 'Access denied'], 403);
+        if ($result['status'] === 'error') {
+            return response()->json(['message' => $result['message']], $result['code']);
         }
 
         return response()->json([
-            'training' => $training
+            'training' => $result['training']
         ]);
     }
 
@@ -94,18 +74,18 @@ class TrainingController extends Controller
             ->where('is_private', 0);
 
         // Поиск
-        if($search) {
+        if ($search) {
             $trainingsQuery->where('name', 'like', '%' . $search . '%');
         }
 
         // Фильтрация
-        if($filter && in_array($filter, $filterOptions)) {
+        if ($filter && in_array($filter, $filterOptions)) {
             $trainingsQuery->where('training_types.name', $filter);
         }
 
         // Сортировка
-        if($sort && in_array($sort, $sortOptions)) {
-            if($sort === 'trainer') {
+        if ($sort && in_array($sort, $sortOptions)) {
+            if ($sort === 'trainer') {
                 $trainingsQuery->orderBy('users.username');
             } else {
                 $trainingsQuery->orderBy($sort);

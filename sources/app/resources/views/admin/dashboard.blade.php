@@ -64,7 +64,7 @@
         {{--Генерация отчета--}}
         @if (in_array('download global_report', $permissions))
             <h3 class="text-center pt-3">
-                <a href="{{ route('admin.globalReport') }}" class="btn btn-success">
+                <a href="{{ route('admin.global_report') }}" class="btn btn-success">
                     Get report
                 </a>
             </h3>

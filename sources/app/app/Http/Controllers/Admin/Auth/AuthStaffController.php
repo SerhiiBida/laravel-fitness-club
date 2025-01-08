@@ -52,6 +52,6 @@ class AuthStaffController extends Controller
     {
         $this->authStaffService->logout();
 
-        return redirect()->route('admin.showLogin');
+        return redirect()->route('admin.show_login');
     }
 }

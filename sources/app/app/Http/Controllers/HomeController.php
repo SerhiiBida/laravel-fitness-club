@@ -6,6 +6,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return redirect()->route('admin.showLogin');
+        return redirect()->route('admin.show_login');
     }
 }
